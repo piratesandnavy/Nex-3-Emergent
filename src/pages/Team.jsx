@@ -44,7 +44,7 @@ const INTERNS = [
   },
   {
     name: "Siddharth M",
-    role: "AI Marketing & Sales",
+    role: "AI Marketing & Sales Intern",
     bio: "AI marketing and sales specialist focused on using automation, data, and emerging tools to build smarter campaigns and sustainable growth.",
     image: "/images/team/siddharth-m.jpg",
   },

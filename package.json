@@ -2,7 +2,7 @@
   "name": "nexe-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.nex3.xyz/",
+  "homepage": ".",
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",
     "axios": "^1.7.7",

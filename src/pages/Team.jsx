@@ -43,10 +43,10 @@ const INTERNS = [
     image: "/images/team/raida-sarooj.jpg",
   },
   {
-    name: "Niketan K",
-    role: "Sales & Marketing Intern",
-    bio: "Sales and marketing intern with a passion for AI automation and business coaching. Driving growth through innovative strategies and AI tooling.",
-    image: "/images/team/niketan-k.jpeg",
+    name: "Siddharth M",
+    role: "AI Marketing & Sales",
+    bio: "AI marketing and sales specialist focused on using automation, data, and emerging tools to build smarter campaigns and sustainable growth.",
+    image: "/images/team/siddharth-m.jpg",
   },
   {
     name: "Afrah Ameen",

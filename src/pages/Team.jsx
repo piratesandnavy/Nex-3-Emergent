@@ -4,26 +4,34 @@ import useLenis from "@/hooks/useLenis";
 import Nav from "@/components/site/Nav";
 import ContactCTA from "@/components/site/ContactCTA";
 
+const SITE_BASE = window.location.hostname.endsWith("github.io")
+  ? "/Nex-3-Emergent"
+  : "";
+
 const CONSULTANTS = [
   {
     name: "Mostafa Purmehdi",
     role: "Senior Consultant · PhD, MBA",
     bio: "Leading expert in AI and Web3 business strategy with 15+ years helping companies navigate digital transformation. Specializes in strategic planning, technology integration, and organizational change.",
+    image: "/images/team/mostafa-purmehdi.jpg",
   },
   {
     name: "Mo Feyzbakhsh",
     role: "Digital Marketing Consultant",
     bio: "Owns the digital front of your company — web design, paid social campaigns, community building, content strategy, and growth hacking for digital-first businesses.",
+    image: "/images/team/mo-feyzbakhsh.jpg",
   },
   {
     name: "Mansour Farhan",
     role: "AI & ML Consultant",
     bio: "Machine learning engineer and AI strategist with deep expertise in shipping AI solutions for business. Focuses on practical AI adoption and ROI optimization.",
+    image: "/images/team/mansour-farhan.jpg",
   },
   {
     name: "Simon Pipel",
     role: "Products & Operations Consultant",
     bio: "Product strategy and operations expert focused on scaling your operations — from product development to operational efficiency and team management.",
+    image: "/images/team/simon-pipel.jpg",
   },
 ];
 
@@ -32,21 +40,25 @@ const INTERNS = [
     name: "Raida Sarooj",
     role: "BI Intern",
     bio: "Business intelligence intern specializing in data analytics and insights. Passionate about leveraging data to drive strategic decisions.",
+    image: "/images/team/raida-sarooj.jpg",
   },
   {
     name: "Niketan K",
     role: "Sales & Marketing Intern",
     bio: "Sales and marketing intern with a passion for AI automation and business coaching. Driving growth through innovative strategies and AI tooling.",
+    image: "/images/team/niketan-k.jpeg",
   },
   {
     name: "Afrah Ameen",
     role: "Social Media Specialist Intern",
     bio: "Builds engaging online communities and crafts compelling content strategies, managing campaigns and social presence across platforms.",
+    image: "/images/team/afrah-ameen.png",
   },
   {
     name: "Dayakar Rayapureddy",
     role: "Sustainability & Leadership Intern",
     bio: "Leads the Youth for the Land program — mobilizing young changemakers around environmental stewardship and community-driven climate action.",
+    image: "/images/team/dayakar-rayapureddy.png",
   },
 ];
 
@@ -56,13 +68,6 @@ const PROGRAM = [
   { n: "03", t: "Mentorship", d: "Work closely with industry experts and senior consultants." },
   { n: "04", t: "Career Support", d: "Guidance for applying to your dream jobs." },
 ];
-
-const initials = (name) =>
-  name
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
 
 function PersonCard({ p, i }) {
   return (
@@ -74,10 +79,14 @@ function PersonCard({ p, i }) {
       data-testid={`team-member-${i}`}
       className="group flex flex-col border-t hairline pt-8"
     >
-      <div className="relative mb-6 flex aspect-[4/3] items-center justify-center overflow-hidden border hairline bg-[var(--ink-2)]">
-        <span className="font-display text-6xl tracking-tight text-[var(--paper)] transition-colors duration-500 group-hover:text-[var(--acid)] sm:text-7xl">
-          {initials(p.name)}
-        </span>
+      <div className="relative mb-6 aspect-[4/3] overflow-hidden border hairline bg-[var(--ink-2)]">
+        <img
+          src={`${SITE_BASE}${p.image}`}
+          alt={`${p.name}, ${p.role}`}
+          loading="lazy"
+          className="h-full w-full object-cover object-top grayscale transition duration-500 group-hover:scale-[1.03] group-hover:grayscale-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/50 via-transparent to-transparent" />
         <span className="absolute bottom-3 left-3 font-mono text-[9px] uppercase tracking-[0.25em] text-[var(--muted)]">
           NEX3
         </span>

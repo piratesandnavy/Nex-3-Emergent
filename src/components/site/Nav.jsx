@@ -1,5 +1,7 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
 const scrollTo = (id) => {
@@ -12,6 +14,7 @@ const scrollTo = (id) => {
 export default function Nav() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const goAnchor = (hash) => {
     if (location.pathname !== "/") {
@@ -28,6 +31,11 @@ export default function Nav() {
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const mobileAction = (action) => {
+    setMenuOpen(false);
+    action();
+  };
+
   return (
     <motion.header
       data-testid="site-nav"
@@ -40,6 +48,7 @@ export default function Nav() {
         <button
           data-testid="nav-logo"
           onClick={() => {
+            setMenuOpen(false);
             if (location.pathname !== "/") navigate("/");
             else goAnchor("#top");
           }}
@@ -76,17 +85,72 @@ export default function Nav() {
           </button>
         </nav>
 
-        <button
-          data-testid="nav-book-call"
-          onClick={() => goAnchor("#contact")}
-          className="group relative overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em]"
-        >
-          <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
-            Book a Call
-          </span>
-          <span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            data-testid="nav-book-call"
+            onClick={() => goAnchor("#contact")}
+            className="group relative hidden overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] md:block"
+          >
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
+              Book a Call
+            </span>
+            <span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
+          </button>
+
+          <button
+            type="button"
+            data-testid="nav-mobile-toggle"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            className="flex h-10 w-10 items-center justify-center rounded-full border hairline text-[var(--paper)] md:hidden"
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            id="mobile-navigation"
+            data-testid="mobile-navigation"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.2 }}
+            className="border-y hairline bg-[var(--ink)] px-5 py-5 shadow-2xl md:hidden"
+          >
+            <div className="mx-auto flex max-w-[1400px] flex-col">
+              <button
+                onClick={() => mobileAction(() => goAnchor("#approach"))}
+                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+              >
+                Approach
+              </button>
+              <button
+                onClick={() => mobileAction(goTeam)}
+                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+              >
+                Team
+              </button>
+              <button
+                onClick={() => mobileAction(() => goAnchor("#contact"))}
+                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+              >
+                Contact
+              </button>
+              <button
+                onClick={() => mobileAction(() => goAnchor("#contact"))}
+                className="mt-5 rounded-full bg-[var(--acid)] px-5 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--ink)]"
+              >
+                Book a Call
+              </button>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

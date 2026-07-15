@@ -1,34 +1,33 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import { toast } from "sonner";
 import { ArrowRight } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const CONTACT_EMAIL = "nex3info@gmail.com";
 
 export default function ContactCTA() {
   const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
-  const [loading, setLoading] = useState(false);
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim()) {
       toast.error("Name and email are required.");
       return;
     }
-    setLoading(true);
-    try {
-      await axios.post(`${API}/leads`, form);
-      toast.success("Received. We'll be in touch within one business day.");
-      setForm({ name: "", email: "", company: "", message: "" });
-    } catch (err) {
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    const subject = `NEX3 website enquiry from ${form.name.trim()}`;
+    const body = [
+      `Name: ${form.name.trim()}`,
+      `Email: ${form.email.trim()}`,
+      `Company / project: ${form.company.trim() || "Not provided"}`,
+      "",
+      form.message.trim() || "No message provided.",
+    ].join("\n");
+
+    toast.success("Opening your email app…");
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const field =
@@ -96,12 +95,11 @@ export default function ContactCTA() {
           <motion.button
             data-testid="lead-submit"
             type="submit"
-            disabled={loading}
             whileTap={{ scale: 0.98 }}
-            className="group relative mt-2 flex items-center justify-center overflow-hidden rounded-full bg-[var(--paper)] px-8 py-4 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--ink)] disabled:opacity-60"
+            className="group relative mt-2 flex items-center justify-center overflow-hidden rounded-full bg-[var(--paper)] px-8 py-4 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--ink)]"
           >
             <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[var(--ink)]">
-              {loading ? "Sending…" : "Send it over"}
+              Send it over
               <ArrowRight className="h-4 w-4" />
             </span>
             <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />

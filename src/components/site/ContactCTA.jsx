@@ -6,6 +6,7 @@ import Nex3Logo from "@/components/site/Nex3Logo";
 
 const CONTACT_EMAIL = "nex3info@gmail.com";
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
+const UPLOAD_ENDPOINT = `https://formsubmit.co/${CONTACT_EMAIL}`;
 
 export default function ContactCTA({ careers = false }) {
   const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
@@ -13,44 +14,42 @@ export default function ContactCTA({ careers = false }) {
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(false);
   const resumeInput = useRef(null);
+  const submissionPending = useRef(false);
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const submit = async (e) => {
-    e.preventDefault();
     if (!form.name.trim() || !form.email.trim()) {
+      e.preventDefault();
       toast.error("Name and email are required.");
       return;
     }
     if (careers && (!form.company.trim() || !form.message.trim() || !position || !resume)) {
+      e.preventDefault();
       toast.error("LinkedIn, position, cover letter, and résumé are required.");
       return;
     }
     if (resume && resume.size > 10 * 1024 * 1024) {
+      e.preventDefault();
       toast.error("Your résumé must be smaller than 10 MB.");
       return;
     }
 
+    if (careers) {
+      submissionPending.current = true;
+      setLoading(true);
+      return;
+    }
+
+    e.preventDefault();
     setLoading(true);
     try {
       const payload = new FormData();
       payload.append("name", form.name.trim());
       payload.append("email", form.email.trim());
-      if (careers) {
-        payload.append("linkedin", form.company.trim());
-        payload.append("position", position);
-        payload.append("cover_letter", form.message.trim());
-        payload.append("resume", resume);
-      } else {
-        payload.append("company", form.company.trim() || "Not provided");
-        payload.append("message", form.message.trim() || "No message provided.");
-      }
-      payload.append(
-        "_subject",
-        careers
-          ? `NEX3 application from ${form.name.trim()} — ${position}`
-          : `NEX3 website enquiry from ${form.name.trim()}`,
-      );
+      payload.append("company", form.company.trim() || "Not provided");
+      payload.append("message", form.message.trim() || "No message provided.");
+      payload.append("_subject", `NEX3 website enquiry from ${form.name.trim()}`);
       payload.append("_template", "table");
       payload.append("_captcha", "false");
       payload.append("_url", window.location.href);
@@ -79,6 +78,17 @@ export default function ContactCTA({ careers = false }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const finishCareerSubmission = () => {
+    if (!submissionPending.current) return;
+    submissionPending.current = false;
+    setLoading(false);
+    setForm({ name: "", email: "", company: "", message: "" });
+    setPosition("");
+    setResume(null);
+    if (resumeInput.current) resumeInput.current.value = "";
+    toast.success("Application sent with your résumé. Thank you for applying to Nex3.");
   };
 
   const field =
@@ -127,12 +137,17 @@ export default function ContactCTA({ careers = false }) {
 
         <form
           onSubmit={submit}
+          action={careers ? UPLOAD_ENDPOINT : undefined}
+          method={careers ? "POST" : undefined}
+          encType={careers ? "multipart/form-data" : undefined}
+          target={careers ? "career-submission-frame" : undefined}
           data-testid="lead-form"
           className="flex flex-col gap-7 lg:col-span-6 lg:col-start-7"
         >
           <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
             <input
               data-testid="lead-name"
+              name="name"
               className={field}
               placeholder="Name *"
               value={form.name}
@@ -140,6 +155,7 @@ export default function ContactCTA({ careers = false }) {
             />
             <input
               data-testid="lead-email"
+              name="email"
               type="email"
               className={field}
               placeholder="Email *"
@@ -149,6 +165,7 @@ export default function ContactCTA({ careers = false }) {
           </div>
           <input
             data-testid="lead-company"
+            name={careers ? "linkedin" : "company"}
             className={field}
             placeholder={careers ? "LinkedIn *" : "Company / project"}
             value={form.company}
@@ -157,6 +174,7 @@ export default function ContactCTA({ careers = false }) {
           {careers && (
             <select
               data-testid="lead-position"
+              name="position"
               className={`${field} appearance-none`}
               value={position}
               onChange={(e) => setPosition(e.target.value)}
@@ -175,6 +193,7 @@ export default function ContactCTA({ careers = false }) {
           )}
           <textarea
             data-testid="lead-message"
+            name={careers ? "cover_letter" : "message"}
             className={`${field} min-h-[120px] resize-none`}
             placeholder={careers ? "Short cover letter *" : "What are you deciding right now?"}
             value={form.message}
@@ -186,12 +205,25 @@ export default function ContactCTA({ careers = false }) {
               <input
                 ref={resumeInput}
                 data-testid="lead-resume"
+                name="resume"
                 type="file"
                 accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 onChange={(e) => setResume(e.target.files?.[0] || null)}
                 className="text-sm normal-case tracking-normal text-[var(--paper)] file:mr-4 file:rounded-full file:border-0 file:bg-[var(--paper)] file:px-4 file:py-2 file:font-mono file:text-[10px] file:uppercase file:tracking-[0.15em] file:text-[var(--ink)]"
               />
             </label>
+          )}
+          {careers && (
+            <>
+              <input
+                type="hidden"
+                name="_subject"
+                value={`NEX3 application from ${form.name.trim() || "candidate"} — ${position || "position not selected"}`}
+              />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_url" value="https://nex3.xyz/team" />
+            </>
           )}
           <motion.button
             data-testid="lead-submit"
@@ -207,6 +239,14 @@ export default function ContactCTA({ careers = false }) {
             <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
           </motion.button>
         </form>
+        {careers && (
+          <iframe
+            name="career-submission-frame"
+            title="Career application submission"
+            className="hidden"
+            onLoad={finishCareerSubmission}
+          />
+        )}
       </div>
 
       <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 border-t hairline px-5 py-8 font-mono text-[10px] uppercase tracking-[0.22em] text-[var(--muted)] sm:flex-row sm:px-10">

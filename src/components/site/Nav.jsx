@@ -15,6 +15,8 @@ export default function Nav() {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const isTeamPage = location.pathname === "/team";
+  const ctaLabel = isTeamPage ? "Join Our Team" : "Book a Call";
 
   const goAnchor = (hash) => {
     if (location.pathname !== "/") {
@@ -30,6 +32,8 @@ export default function Nav() {
     else if (window.__lenis) window.__lenis.scrollTo(0);
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const goContact = () => scrollTo("#contact");
 
   const mobileAction = (action) => {
     setMenuOpen(false);
@@ -78,7 +82,7 @@ export default function Nav() {
           </button>
           <button
             data-testid="nav-link-contact"
-            onClick={() => goAnchor("#contact")}
+            onClick={goContact}
             className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
           >
             Contact
@@ -88,11 +92,11 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           <button
             data-testid="nav-book-call"
-            onClick={() => goAnchor("#contact")}
+            onClick={goContact}
             className="group relative hidden overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] md:block"
           >
             <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
-              Book a Call
+              {ctaLabel}
             </span>
             <span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
           </button>
@@ -136,16 +140,16 @@ export default function Nav() {
                 Team
               </button>
               <button
-                onClick={() => mobileAction(() => goAnchor("#contact"))}
+                onClick={() => mobileAction(goContact)}
                 className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
               >
                 Contact
               </button>
               <button
-                onClick={() => mobileAction(() => goAnchor("#contact"))}
+                onClick={() => mobileAction(goContact)}
                 className="mt-5 rounded-full bg-[var(--acid)] px-5 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--ink)]"
               >
-                Book a Call
+                {ctaLabel}
               </button>
             </div>
           </motion.nav>

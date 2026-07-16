@@ -203,7 +203,7 @@ export default function Team() {
         </div>
       </section>
 
-      <ContactCTA />
+      <ContactCTA careers />
     </main>
   );
 }

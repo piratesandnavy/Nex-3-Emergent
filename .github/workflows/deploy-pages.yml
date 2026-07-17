@@ -33,8 +33,13 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Add single-page app fallback
-        run: cp build/index.html build/404.html
+      - name: Add route entry points and single-page app fallback
+        run: |
+          cp build/index.html build/404.html
+          mkdir -p build/team build/testimonials build/audit
+          cp build/index.html build/team/index.html
+          cp build/index.html build/testimonials/index.html
+          cp build/index.html build/audit/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

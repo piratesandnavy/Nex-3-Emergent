@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, Sparkles, Image as ImageIcon, PenTool, Clapperboard } from "lucide-react";
+import { Check, ArrowRight, Sparkles, Image as ImageIcon, PenTool, Clapperboard, Menu, X } from "lucide-react";
 import {
   SiClaude,
   SiGooglegemini,
@@ -38,6 +38,7 @@ export default function Audit() {
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -93,9 +94,19 @@ export default function Audit() {
   };
 
   const bookCall = () => {
+    setMenuOpen(false);
     navigate("/");
     setTimeout(() => {
       const el = document.querySelector("#contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 450);
+  };
+
+  const goApproach = () => {
+    setMenuOpen(false);
+    navigate("/");
+    setTimeout(() => {
+      const el = document.querySelector("#approach");
       if (el) el.scrollIntoView({ behavior: "smooth" });
     }, 450);
   };
@@ -128,22 +139,105 @@ export default function Audit() {
   return (
     <main data-testid="audit-page" className="relative min-h-screen bg-[var(--ink)] pb-28">
       {/* Top bar */}
-      <div className="mx-auto flex max-w-[1300px] items-center justify-between px-5 py-6 sm:px-10">
-        <Link to="/" data-testid="audit-home" className="flex items-center gap-3">
-          <Nex3Logo animate={false} className="h-4 w-auto" />
-          <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--muted)]">INC.</span>
-        </Link>
-        <button
-          data-testid="audit-book-call"
-          onClick={bookCall}
-          className="group relative overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em]"
-        >
-          <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
-            Book a Call
-          </span>
-          <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
-        </button>
-      </div>
+      <header>
+        <div className="mx-auto flex max-w-[1300px] items-center justify-between px-5 py-6 sm:px-10">
+          <Link to="/" data-testid="audit-home" className="flex items-center gap-3">
+            <Nex3Logo animate={false} className="h-4 w-auto" />
+            <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--muted)]">INC.</span>
+          </Link>
+
+          <nav className="hidden items-center gap-9 md:flex" aria-label="Audit page navigation">
+            <button
+              data-testid="audit-nav-approach"
+              onClick={goApproach}
+              className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
+            >
+              Approach
+            </button>
+            <Link
+              to="/team"
+              data-testid="audit-nav-team"
+              className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
+            >
+              Team
+            </Link>
+            <Link
+              to="/testimonials"
+              data-testid="audit-nav-testimonials"
+              className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
+            >
+              Testimonials
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <button
+              data-testid="audit-book-call"
+              onClick={bookCall}
+              className="group relative hidden overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] sm:block"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
+                Book a Call
+              </span>
+              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
+            </button>
+            <button
+              type="button"
+              data-testid="audit-mobile-toggle"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              aria-controls="audit-mobile-navigation"
+              className="flex h-10 w-10 items-center justify-center rounded-full border hairline text-[var(--paper)] md:hidden"
+            >
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.nav
+              id="audit-mobile-navigation"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.2 }}
+              className="border-y hairline bg-[var(--ink)] px-5 py-5 shadow-2xl md:hidden"
+              aria-label="Audit page mobile navigation"
+            >
+              <div className="mx-auto flex max-w-[1300px] flex-col">
+                <button
+                  onClick={goApproach}
+                  className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+                >
+                  Approach
+                </button>
+                <Link
+                  to="/team"
+                  onClick={() => setMenuOpen(false)}
+                  className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+                >
+                  Team
+                </Link>
+                <Link
+                  to="/testimonials"
+                  onClick={() => setMenuOpen(false)}
+                  className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+                >
+                  Testimonials
+                </Link>
+                <button
+                  onClick={bookCall}
+                  className="mt-5 rounded-full bg-[var(--acid)] px-5 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--ink)] sm:hidden"
+                >
+                  Book a Call
+                </button>
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </header>
 
       {/* Hero */}
       <header className="border-b hairline pb-16 pt-10 text-center">

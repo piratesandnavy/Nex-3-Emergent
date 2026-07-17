@@ -33,6 +33,12 @@ export default function Nav() {
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const goRoute = (path) => {
+    if (location.pathname !== path) navigate(path);
+    else if (window.__lenis) window.__lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const goContact = () => scrollTo("#contact");
 
   const mobileAction = (action) => {
@@ -81,11 +87,18 @@ export default function Nav() {
             Team
           </button>
           <button
-            data-testid="nav-link-contact"
-            onClick={goContact}
+            data-testid="nav-link-testimonials"
+            onClick={() => goRoute("/testimonials")}
             className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
           >
-            Contact
+            Testimonials
+          </button>
+          <button
+            data-testid="nav-link-audit"
+            onClick={() => goRoute("/audit")}
+            className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
+          >
+            Audit
           </button>
         </nav>
 
@@ -140,10 +153,16 @@ export default function Nav() {
                 Team
               </button>
               <button
-                onClick={() => mobileAction(goContact)}
+                onClick={() => mobileAction(() => goRoute("/testimonials"))}
                 className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
               >
-                Contact
+                Testimonials
+              </button>
+              <button
+                onClick={() => mobileAction(() => goRoute("/audit"))}
+                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
+              >
+                Audit
               </button>
               <button
                 onClick={() => mobileAction(goContact)}

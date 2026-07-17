@@ -119,12 +119,10 @@ export default function Audit() {
     }
     setSending(true);
     try {
-      await axios.post(`${API}/audit`, {
-        email,
-        tools: picked.map((t) => t.name),
-        current_cost: currentCost,
-        localized_cost: localizedCost,
-        saved_pct: savedPct,
+      await axios.post(`${API}/free-tools`, {
+        email: email.trim(),
+        referrer: document.referrer,
+        landingPage: window.location.pathname,
       });
       setSent(true);
       toast.success("On its way — check your inbox for the audit + starter kit.");

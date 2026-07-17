@@ -6,15 +6,22 @@
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",
     "axios": "^1.7.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.0",
     "framer-motion": "^11.11.9",
+    "helmet": "^8.3.0",
     "lenis": "^1.1.14",
     "lucide-react": "^0.451.0",
     "next-themes": "^0.3.0",
+    "nodemailer": "^9.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.7.0",
     "react-router-dom": "^6.27.0",
-    "sonner": "^1.5.0"
+    "sonner": "^1.5.0",
+    "validator": "^13.15.35"
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
@@ -26,9 +33,11 @@
   "scripts": {
     "dev": "NODE_OPTIONS=--no-deprecation craco start",
     "start": "NODE_OPTIONS=--no-deprecation craco start",
+    "start:server": "node server/index.js",
     "build": "NODE_OPTIONS=--no-deprecation craco build",
     "lint": "eslint src --max-warnings=0",
-    "test": "craco test"
+    "test": "craco test",
+    "test:server": "node --test server/*.test.js"
   },
   "eslintConfig": {
     "extends": ["react-app"]

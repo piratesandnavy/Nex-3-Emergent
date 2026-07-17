@@ -13,6 +13,9 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import Nex3Logo from "@/components/site/Nex3Logo";
+import Manifesto from "@/components/site/Manifesto";
+import TeamSections from "@/components/site/TeamSections";
+import TestimonialsSections from "@/components/site/TestimonialsSections";
 
 const API = `${process.env.REACT_APP_BACKEND_URL || "https://elite-founder-hub.emergent.host"}/api`;
 
@@ -475,6 +478,10 @@ export default function Audit() {
           </motion.section>
         )}
       </AnimatePresence>
+
+      <Manifesto />
+      <TeamSections />
+      <TestimonialsSections />
 
       <footer className="mt-24 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--muted)]">
         NEX3 Inc. · AI Cost Audit

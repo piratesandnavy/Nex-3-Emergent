@@ -171,17 +171,33 @@ export default function Team() {
         className="border-y hairline bg-[var(--ink-2)]"
       >
         <div className="mx-auto max-w-[1400px] px-5 py-24 sm:px-10 sm:py-32">
-          <div className="max-w-2xl">
-            <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--acid)]">
-              Springboard Internship Program
-            </span>
-            <h2 className="font-display mt-5 text-3xl leading-[1.05] tracking-tight sm:text-5xl">
-              Build Canadian work experience while you learn.
-            </h2>
-            <p className="mt-5 text-base text-[var(--muted)] sm:text-lg">
-              For students who want to gain real experience, learn new skills,
-              and land their dream jobs.
-            </p>
+          <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.9fr)] lg:gap-16">
+            <div className="max-w-2xl">
+              <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--acid)]">
+                Springboard Internship Program
+              </span>
+              <h2 className="font-display mt-5 text-3xl leading-[1.05] tracking-tight sm:text-5xl">
+                Build Canadian work experience while you learn.
+              </h2>
+              <p className="mt-5 text-base text-[var(--muted)] sm:text-lg">
+                For students who want to gain real experience, learn new skills,
+                and land their dream jobs.
+              </p>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center lg:justify-end"
+            >
+              <img
+                src={`${SITE_BASE}/images/springboard-logo.png`}
+                alt="Springboard — Launch Your Career"
+                className="w-full max-w-[620px] mix-blend-screen"
+              />
+            </motion.div>
           </div>
 
           <div className="mt-16 grid grid-cols-1 gap-px border hairline bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">

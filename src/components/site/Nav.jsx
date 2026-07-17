@@ -93,13 +93,6 @@ export default function Nav() {
           >
             Testimonials
           </button>
-          <button
-            data-testid="nav-link-audit"
-            onClick={() => goRoute("/audit")}
-            className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
-          >
-            Audit
-          </button>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -157,12 +150,6 @@ export default function Nav() {
                 className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
               >
                 Testimonials
-              </button>
-              <button
-                onClick={() => mobileAction(() => goRoute("/audit"))}
-                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
-              >
-                Audit
               </button>
               <button
                 onClick={() => mobileAction(goContact)}

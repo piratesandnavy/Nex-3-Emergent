@@ -147,29 +147,29 @@ export default function Audit() {
 
       {/* Hero */}
       <header className="border-b hairline pb-16 pt-10 text-center">
-        <motion.h1
-          data-testid="audit-headline"
+        <motion.p
+          data-testid="audit-subheadline"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl lg:text-8xl"
+          className="font-display text-2xl font-semibold tracking-[-0.01em] sm:text-3xl lg:text-4xl"
         >
-          Free AI <span className="italic text-[var(--acid)]">Budget</span> Audit
+          Free <span className="text-[var(--acid)]">AI Budget</span> Audit
+        </motion.p>
+        <motion.h1
+          data-testid="audit-headline"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mt-5 font-display text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl lg:text-8xl"
+        >
+          Pick 3 AI You Pay For
         </motion.h1>
       </header>
 
       {/* Picker */}
       <section className="mx-auto max-w-[1300px] px-5 pt-20 sm:px-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center font-display text-3xl tracking-tight sm:text-4xl"
-        >
-          Pick <span className="text-[var(--acid)]">3</span> AI you pay for
-        </motion.h2>
-
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {TOOLS.map((t) => {
             const isSel = selected.includes(t.id);
             const disabled = !isSel && selected.length >= MAX;
@@ -388,4 +388,3 @@ export default function Audit() {
     </main>
   );
 }
-

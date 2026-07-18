@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { createApp, normalizeEmail } = require("./app");
+const { createApp, normalizeEmail, isLeadMagnetRequest } = require("./app");
 
 test("normalizeEmail accepts and normalizes a valid address", () => {
   assert.equal(normalizeEmail("  Person@Example.COM "), "person@example.com");
@@ -10,6 +10,11 @@ test("normalizeEmail accepts and normalizes a valid address", () => {
 test("normalizeEmail rejects malformed and non-string values", () => {
   assert.equal(normalizeEmail("not-an-email"), null);
   assert.equal(normalizeEmail(undefined), null);
+});
+
+test("lead magnet matching is case insensitive", () => {
+  assert.equal(isLeadMagnetRequest("Please send the FREE AI guide"), true);
+  assert.equal(isLeadMagnetRequest("General consulting enquiry"), false);
 });
 
 test("POST /api/free-tools validates input and completes delivery", async (t) => {
@@ -38,20 +43,20 @@ test("POST /api/free-tools validates input and completes delivery", async (t) =>
   const invalidResponse = await fetch(`${baseUrl}/api/free-tools`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ email: "invalid" }),
+    body: JSON.stringify({ name: "Person", email: "invalid" }),
   });
   assert.equal(invalidResponse.status, 400);
 
   const successResponse = await fetch(`${baseUrl}/api/free-tools`, {
     method: "POST",
     headers: { "content-type": "application/json", "user-agent": "Test Browser" },
-    body: JSON.stringify({ email: "person@example.com", landingPage: "/audit" }),
+    body: JSON.stringify({ name: "Person Example", email: "person@example.com", message: "Get Free Tools Guide", landingPage: "/audit" }),
   });
   assert.equal(successResponse.status, 200);
   assert.deepEqual(await successResponse.json(), { success: true });
   assert.equal(savedLeads[0].status, "sent");
   assert.deepEqual(deliveries, [
-    ["visitor", "person@example.com"],
+    ["visitor", savedLeads[0]],
     ["notification", "person@example.com"],
   ]);
 });

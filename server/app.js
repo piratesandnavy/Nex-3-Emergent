@@ -22,6 +22,16 @@ function cleanMetadata(value, fallback, maxLength = 1000) {
   return validator.stripLow(value.trim(), true).slice(0, maxLength) || fallback;
 }
 
+function cleanRequired(value, maxLength) {
+  if (typeof value !== "string") return null;
+  const cleaned = validator.escape(validator.stripLow(value.trim(), true)).slice(0, maxLength);
+  return cleaned || null;
+}
+
+function isLeadMagnetRequest(message) {
+  return /\b(free tools|get free tools|free ai|ai tools|guide|pdf)\b/i.test(message);
+}
+
 function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   const value = typeof forwarded === "string" ? forwarded.split(",")[0] : req.ip;
@@ -54,9 +64,15 @@ function createApp(dependencies = {}) {
   app.get("/health", (_req, res) => res.status(200).json({ status: "ok" }));
 
   app.post("/api/free-tools", freeToolsLimiter, async (req, res) => {
+    const name = cleanRequired(req.body?.name, 120);
     const email = normalizeEmail(req.body?.email);
-    if (!email) {
-      return res.status(400).json({ error: "Enter a valid email address." });
+    const company = cleanMetadata(req.body?.company, "Not provided", 200);
+    const message = cleanMetadata(req.body?.message, "Get Free Tools Guide", 2000);
+    if (!name || !email) {
+      return res.status(400).json({ error: "Name and a valid email address are required." });
+    }
+    if (!isLeadMagnetRequest(message)) {
+      return res.status(400).json({ error: "This endpoint only accepts Free AI Guide requests." });
     }
 
     try {
@@ -68,7 +84,10 @@ function createApp(dependencies = {}) {
 
       const timestamp = new Date().toISOString();
       const lead = await leadStore.create({
+        name,
         email,
+        company,
+        message,
         timestamp,
         ip: getClientIp(req),
         userAgent: cleanMetadata(req.get("user-agent"), "Unavailable"),
@@ -78,7 +97,7 @@ function createApp(dependencies = {}) {
 
       try {
         await Promise.all([
-          emailService.sendToolkit(email),
+          emailService.sendToolkit(lead),
           emailService.notifyNewLead(lead),
         ]);
         await leadStore.setStatus(lead.id, "sent");
@@ -103,4 +122,4 @@ function createApp(dependencies = {}) {
   return app;
 }
 
-module.exports = { createApp, normalizeEmail };
+module.exports = { createApp, normalizeEmail, isLeadMagnetRequest };

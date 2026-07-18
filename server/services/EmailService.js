@@ -13,27 +13,30 @@ class EmailService {
     });
   }
 
-  async sendToolkit(email) {
+  async sendToolkit(leadOrEmail) {
+    const lead = typeof leadOrEmail === "string" ? { email: leadOrEmail, name: "there" } : leadOrEmail;
+    const firstName = lead.name.split(/\s+/)[0];
     return this.transporter.sendMail({
       from: this.from,
-      to: email,
-      subject: "Your Free AI Toolkit from NEX3",
+      to: lead.email,
+      subject: "Your Free AI Tools Guide from NEX3",
       text: [
-        "Hi,",
+        `Hi ${firstName},`,
         "",
-        "Thanks for requesting the NEX3 Free AI Toolkit.",
+        "Thank you for requesting our Ultimate Guide to Free AI.",
         "Your guide is attached to this email.",
         "",
         "Inside you'll discover:",
-        "• Free AI alternatives",
-        "• Open-source AI models",
+        "• Free ChatGPT alternatives",
+        "• Open-source coding tools",
+        "• Free AI image generators",
+        "• Video AI",
+        "• Voice AI",
         "• Installation guides",
-        "• Local AI setup",
-        "• Hardware recommendations",
-        "• AI cost-saving strategies",
+        "• Recommended workflows",
         "",
-        "Enjoy!",
-        "The NEX3 Team",
+        "If you'd like help implementing AI inside your business, simply reply to this email.",
+        "— NEX3 Consulting",
         "https://nex3.xyz",
       ].join("\n"),
       attachments: [
@@ -50,27 +53,24 @@ class EmailService {
     return this.transporter.sendMail({
       from: this.from,
       to: this.notificationEmail,
-      subject: "New Free Toolkit Download",
+      subject: "New Free AI Guide Download",
       text: [
-        "A new visitor downloaded the Free AI Toolkit.",
+        "A new lead downloaded the Free AI Guide.",
         "",
+        "Name:",
+        lead.name,
         "Email:",
         lead.email,
-        "",
-        "Time:",
+        "Company:",
+        lead.company,
+        "Message:",
+        lead.message,
+        "Downloaded:",
+        "The Ultimate Guide to Free AI",
+        "Timestamp:",
         lead.timestamp,
-        "",
-        "IP:",
-        lead.ip || "Unavailable",
-        "",
-        "Browser:",
-        lead.userAgent || "Unavailable",
-        "",
-        "Referral:",
-        lead.referrer || "Direct / unavailable",
-        "",
-        "Landing Page:",
-        lead.landingPage || "/audit",
+        "Source:",
+        "/audit",
       ].join("\n"),
     });
   }

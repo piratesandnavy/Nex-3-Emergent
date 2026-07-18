@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
-const API = `${process.env.REACT_APP_BACKEND_URL || "https://elite-founder-hub.emergent.host"}/api`;
+const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || "https://nex-3-api.vercel.app"}/api`;
 
 const TOOLS = [
   { id: "chatgpt", name: "ChatGPT Plus", Icon: Sparkles, price: 20, bg: "#8FB39B", fg: "#12241B" },
@@ -35,7 +35,7 @@ export default function Audit() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
   const [audited, setAudited] = useState(false);
-  const [email, setEmail] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -113,22 +113,22 @@ export default function Audit() {
 
   const submitEmail = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !email.includes("@")) {
-      toast.error("Enter a valid email.");
+    if (!form.name.trim() || !/^\S+@\S+\.\S+$/.test(form.email.trim())) {
+      toast.error("Name and a valid email are required.");
       return;
     }
     setSending(true);
     try {
-      await axios.post(`${API}/audit`, {
-        email,
-        tools: picked.map((t) => t.name),
-        current_cost: currentCost,
-        localized_cost: localizedCost,
-        saved_pct: savedPct,
+      await axios.post(`${API}/free-tools`, {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        company: form.company.trim(),
+        message: form.message.trim() || "Get Free Tools Guide",
+        referrer: document.referrer,
+        landingPage: window.location.pathname,
       });
       setSent(true);
-      toast.success("On its way — check your inbox for the audit + starter kit.");
-      setEmail("");
+      toast.success("Your Free AI Guide has been sent.");
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
@@ -442,31 +442,34 @@ export default function Audit() {
               </p>
               {sent ? (
                 <p data-testid="audit-sent" className="mt-8 font-mono text-sm text-[var(--acid)]">
-                  Sent. We&rsquo;ll be in touch shortly.
+                  ✅ Thank you!<br />
+                  Your Free AI Guide has been sent to your email.<br />
+                  If you don&rsquo;t see it within a minute, please check your Spam or Promotions folder.
                 </p>
               ) : (
                 <form
                   onSubmit={submitEmail}
                   noValidate
                   data-testid="audit-form"
-                  className="mx-auto mt-8 flex max-w-lg flex-col gap-3 sm:flex-row"
+                  className="mx-auto mt-8 flex max-w-lg flex-col gap-3"
                 >
                   <input
-                    data-testid="audit-email"
-                    aria-label="Email address"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@company.com"
+                    aria-label="Name"
+                    value={form.name}
+                    onChange={(e) => setForm((current) => ({ ...current, name: e.target.value }))}
+                    placeholder="Name *"
                     className="flex-1 rounded-full border hairline bg-[var(--ink)] px-6 py-4 text-sm text-[var(--paper)] placeholder:text-[var(--muted)] outline-none transition-colors duration-300 focus:border-[var(--acid)]"
                   />
+                  <input data-testid="audit-email" aria-label="Email address" type="email" value={form.email} onChange={(e) => setForm((current) => ({ ...current, email: e.target.value }))} placeholder="Email *" className="flex-1 rounded-full border hairline bg-[var(--ink)] px-6 py-4 text-sm text-[var(--paper)] placeholder:text-[var(--muted)] outline-none transition-colors duration-300 focus:border-[var(--acid)]" />
+                  <input aria-label="Company" value={form.company} onChange={(e) => setForm((current) => ({ ...current, company: e.target.value }))} placeholder="Company (optional)" className="flex-1 rounded-full border hairline bg-[var(--ink)] px-6 py-4 text-sm text-[var(--paper)] placeholder:text-[var(--muted)] outline-none transition-colors duration-300 focus:border-[var(--acid)]" />
+                  <textarea aria-label="Message" value={form.message} onChange={(e) => setForm((current) => ({ ...current, message: e.target.value }))} placeholder="Message (optional)" className="min-h-28 flex-1 rounded-3xl border hairline bg-[var(--ink)] px-6 py-4 text-sm text-[var(--paper)] placeholder:text-[var(--muted)] outline-none transition-colors duration-300 focus:border-[var(--acid)]" />
                   <button
                     data-testid="audit-submit"
                     type="submit"
                     disabled={sending}
                     className="group relative overflow-hidden rounded-full bg-[var(--paper)] px-8 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--ink)] disabled:opacity-60"
                   >
-                    <span className="relative z-10">{sending ? "Sending…" : "Get Free Tools"}</span>
+                    <span className="relative z-10">{sending ? "Sending..." : "Send It Over"}</span>
                     <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
                   </button>
                 </form>

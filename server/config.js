@@ -18,7 +18,9 @@ module.exports = {
   port: Number(process.env.PORT || 3001),
   clientOrigin: process.env.CLIENT_ORIGIN || "https://nex3.xyz",
   notificationEmail: process.env.NOTIFICATION_EMAIL || "nex3info@gmail.com",
-  leadsFile: process.env.LEADS_FILE || path.resolve(process.cwd(), "data/leads.json"),
+  leadsFile: process.env.LEADS_FILE || (process.env.VERCEL
+    ? "/tmp/nex3-leads.json"
+    : path.resolve(process.cwd(), "data/leads.json")),
   toolkitPath: path.resolve(
     process.cwd(),
     "public/TheUltimateGuidetoFreeAI-NEX3_WithLogo.pdf"

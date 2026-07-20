@@ -7,6 +7,7 @@ const validator = require("validator");
 const config = require("./config");
 const LeadStore = require("./services/LeadStore");
 const EmailService = require("./services/EmailService");
+const ChatService = require("./services/ChatService");
 
 const DUPLICATE_WINDOW_MS = 5 * 60 * 1000;
 
@@ -28,6 +29,29 @@ function cleanRequired(value, maxLength) {
   return cleaned || null;
 }
 
+function cleanChatText(value, maxLength = 1200) {
+  if (typeof value !== "string") return null;
+  const cleaned = validator.stripLow(value.trim(), true).slice(0, maxLength);
+  return cleaned || null;
+}
+
+function normalizeChatRequest(body) {
+  if (!Array.isArray(body?.messages) || body.messages.length < 1) return null;
+  const messages = body.messages.slice(-10).map((message) => ({
+    role: message?.role === "assistant" ? "assistant" : "user",
+    content: cleanChatText(message?.content),
+  }));
+  if (messages.some((message) => !message.content) || messages.at(-1).role !== "user") return null;
+  const supplied = body?.submissionContext;
+  const email = supplied ? normalizeEmail(supplied.email) : null;
+  const submissionContext = supplied && email ? {
+    firstName: cleanMetadata(supplied.firstName, "", 80),
+    email,
+    company: cleanMetadata(supplied.company, "", 160),
+  } : null;
+  return { messages, submissionContext };
+}
+
 function isLeadMagnetRequest(message) {
   return /\b(free tools|get free tools|free ai|ai tools|guide|pdf)\b/i.test(message);
 }
@@ -46,6 +70,9 @@ function createApp(dependencies = {}) {
     notificationEmail: config.notificationEmail,
     toolkitPath: config.toolkitPath,
   });
+  const chatService = dependencies.chatService || (config.geminiApiKey
+    ? new ChatService({ apiKey: config.geminiApiKey, model: config.geminiModel, timeoutMs: config.chatTimeoutMs })
+    : null);
 
   app.set("trust proxy", 1);
   app.disable("x-powered-by");
@@ -60,8 +87,29 @@ function createApp(dependencies = {}) {
     legacyHeaders: false,
     message: { error: "Too many requests. Please try again later." },
   });
+  const chatLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    limit: 30,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: { error: "Too many chat requests. Please wait a few minutes and try again." },
+  });
 
   app.get("/health", (_req, res) => res.status(200).json({ status: "ok" }));
+
+  app.post("/api/chat", chatLimiter, async (req, res) => {
+    if (!chatService) return res.status(503).json({ error: "The AI assistant is not configured." });
+    const input = normalizeChatRequest(req.body);
+    if (!input) return res.status(400).json({ error: "A valid message is required." });
+    try {
+      const reply = await chatService.reply(input);
+      if (!reply) throw new Error("Empty provider response");
+      return res.status(200).json({ reply });
+    } catch (error) {
+      console.error("Chat request failed", { name: error?.name, status: error?.status });
+      return res.status(502).json({ error: "The AI assistant is temporarily unavailable. Please try again." });
+    }
+  });
 
   app.post("/api/free-tools", freeToolsLimiter, async (req, res) => {
     const name = cleanRequired(req.body?.name, 120);
@@ -122,4 +170,4 @@ function createApp(dependencies = {}) {
   return app;
 }
 
-module.exports = { createApp, normalizeEmail, isLeadMagnetRequest };
+module.exports = { createApp, normalizeEmail, isLeadMagnetRequest, normalizeChatRequest };

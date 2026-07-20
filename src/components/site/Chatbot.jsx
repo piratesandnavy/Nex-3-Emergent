@@ -196,7 +196,10 @@ export default function Chatbot() {
         >
           <header className="nex3-chat-header">
             <div className="flex min-w-0 items-center gap-3">
-              <span className="nex3-chat-mark"><Nex3Logo animate={false} color="var(--ink)" className="w-full" /></span>
+              <span className="nex3-chat-mark">
+                <Nex3Logo animate={false} className="nex3-chat-wordmark" />
+                <span>INC.</span>
+              </span>
               <div className="min-w-0">
                 <span className="nex3-chat-kicker">{mode === "post" ? "Inquiry Desk · Received" : "AI Desk · Online"}</span>
                 <h2 id="nex3-chat-title" className="font-display">{mode === "post" ? "Inquiry Assistant" : "Nex3 Assistant"}</h2>

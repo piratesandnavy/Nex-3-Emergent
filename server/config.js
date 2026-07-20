@@ -17,7 +17,7 @@ function getMissingSmtpVariables() {
 module.exports = {
   port: Number(process.env.PORT || 3001),
   clientOrigin: process.env.CLIENT_ORIGIN || "https://nex3.xyz",
-  notificationEmail: process.env.NOTIFICATION_EMAIL || "nex3info@gmail.com",
+  notificationEmail: process.env.NOTIFICATION_EMAIL || "nex3.info@gmail.com",
   geminiApiKey: process.env.GEMINI_API_KEY,
   geminiModel: process.env.GEMINI_MODEL || "gemini-3.1-flash-lite",
   chatTimeoutMs: Number(process.env.CHAT_TIMEOUT_MS || 15000),

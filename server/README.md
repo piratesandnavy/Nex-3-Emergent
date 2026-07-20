@@ -13,7 +13,7 @@ SMTP_SECURE=false
 SMTP_USER=
 SMTP_PASSWORD=
 SMTP_FROM=NEX3 <noreply@nex3.xyz>
-NOTIFICATION_EMAIL=nex3info@gmail.com
+NOTIFICATION_EMAIL=nex3.info@gmail.com
 CLIENT_ORIGIN=https://nex3.xyz
 ```
 

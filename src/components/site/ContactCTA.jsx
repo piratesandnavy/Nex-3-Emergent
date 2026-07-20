@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { ArrowRight } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
-const CONTACT_EMAIL = "nex3info@gmail.com";
+const CONTACT_EMAIL = "nex3.info@gmail.com";
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
 const UPLOAD_ENDPOINT = `https://formsubmit.co/${CONTACT_EMAIL}`;
 

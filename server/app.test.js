@@ -66,6 +66,9 @@ test("ChatService sends trusted instructions to Gemini and extracts text", async
   assert.equal(calls[0].options.body.includes("ADDITIONAL FAQ KNOWLEDGE"), true);
   assert.equal(calls[0].options.body.includes("startup MVPs, and micro-SaaS products"), true);
   assert.equal(calls[0].options.body.includes("Nex3 can discuss signing an NDA"), true);
+  assert.equal(calls[0].options.body.includes("Mostafa Purmehdi, PhD, MBA"), true);
+  assert.equal(calls[0].options.body.includes("nex3info@gmail.com"), true);
+  assert.equal(calls[0].options.body.includes("nex3.info@gmail.com"), false);
 });
 
 test("POST /api/free-tools validates input and completes delivery", async (t) => {

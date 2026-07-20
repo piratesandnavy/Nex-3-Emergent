@@ -79,7 +79,7 @@ code { font-family: 'Azeret Mono', monospace; }
 .nex3-chat-header svg { width: 1.25rem; height: 1.25rem; }
 .nex3-chat-mark { display: flex; align-items: center; gap: .85rem; width: 10.5rem; flex: none; color: var(--muted); font-family: 'Azeret Mono', monospace; font-size: .74rem; letter-spacing: .3em; white-space: nowrap; }
 .nex3-chat-header .nex3-chat-wordmark { width: 5.9rem; height: auto; flex: none; }
-.nex3-chat-history { min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; -ms-overflow-style: none; padding: 0 1.5rem 1.5rem; scroll-behavior: smooth; }
+.nex3-chat-history { min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding: 0 1.5rem 1.5rem; scroll-behavior: smooth; }
 .nex3-chat-history::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .nex3-chat-status { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 -1.5rem 1.35rem; padding: .9rem 1.5rem; border-bottom: 1px solid var(--line); background: rgba(11,11,12,.97); color: #adada8; font-size: .8rem; }
 .nex3-chat-status > span { display: flex; align-items: center; gap: .55rem; }

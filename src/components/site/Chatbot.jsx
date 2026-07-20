@@ -209,7 +209,7 @@ export default function Chatbot() {
               <button type="button" onClick={() => setOpen(false)} aria-label="Close chat"><X /></button>
             </div>
           </header>
-          <div ref={historyRef} className="nex3-chat-history" role="log" aria-live="polite" aria-relevant="additions">
+          <div ref={historyRef} className="nex3-chat-history" role="log" aria-live="polite" aria-relevant="additions" data-lenis-prevent>
             <div className="nex3-chat-status">
               <span><i aria-hidden="true" />{mode === "post" ? "Inquiry received" : "Online"} <b>·</b> {mode === "post" ? "Reply in 1–2 business days" : "Typically replies instantly"}</span>
               <span className="nex3-chat-secure"><LockKeyhole aria-hidden="true" />{mode === "post" ? "Separate inquiry chat" : "Secure & private"}</span>

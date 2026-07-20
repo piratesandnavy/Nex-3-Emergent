@@ -5,6 +5,7 @@ import Landing from "@/pages/Landing";
 import Team from "@/pages/Team";
 import Testimonials from "@/pages/Testimonials";
 import Audit from "@/pages/Audit";
+import Chatbot from "@/components/site/Chatbot";
 
 function App() {
   const basename = window.location.hostname.endsWith("github.io")
@@ -23,6 +24,7 @@ function App() {
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/audit" element={<Audit />} />
         </Routes>
+        <Chatbot />
       </BrowserRouter>
       <Toaster position="bottom-right" theme="dark" />
     </div>

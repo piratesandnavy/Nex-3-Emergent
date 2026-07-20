@@ -64,6 +64,10 @@ export default function ContactCTA({ careers = false }) {
 
       if (!response.ok) throw new Error("Form submission failed");
 
+      window.dispatchEvent(new CustomEvent("nex3:inquiry-submitted", {
+        detail: { name: form.name.trim(), email: form.email.trim(), company: form.company.trim() },
+      }));
+
       toast.success(
         careers
           ? "Application sent. Thank you for applying to Nex3."

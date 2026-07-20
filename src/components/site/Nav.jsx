@@ -54,7 +54,7 @@ export default function Nav() {
       transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-5 sm:px-10">
+      <div className="nex3-glass-nav mx-auto flex w-full max-w-[1400px] items-center justify-between px-5 py-5 sm:px-10">
         <button
           data-testid="nav-logo"
           onClick={() => {

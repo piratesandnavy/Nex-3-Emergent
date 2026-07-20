@@ -62,6 +62,10 @@ test("ChatService sends trusted instructions to Gemini and extracts text", async
   assert.equal(reply, "A concise answer.");
   assert.equal(calls[0].options.headers["x-goog-api-key"], "test-key");
   assert.equal(calls[0].options.body.includes("test-key"), false);
+  assert.equal(calls[0].options.body.includes("AI/business/marketing strategy"), true);
+  assert.equal(calls[0].options.body.includes("ADDITIONAL FAQ KNOWLEDGE"), true);
+  assert.equal(calls[0].options.body.includes("startup MVPs, and micro-SaaS products"), true);
+  assert.equal(calls[0].options.body.includes("Nex3 can discuss signing an NDA"), true);
 });
 
 test("POST /api/free-tools validates input and completes delivery", async (t) => {

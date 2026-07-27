@@ -8,61 +8,67 @@ import ContactCTA from "@/components/site/ContactCTA";
 const TESTIMONIALS = [
   {
     quote:
-      "NEX3 cut through six months of internal debate in two weeks. We walked out with a token model our investors actually understood — and a roadmap we could ship against.",
-    name: "Elena Vasquez",
-    role: "Co-founder & CEO",
-    company: "Ledgerframe",
-    stat: "$12M raised",
+      "Nex3's free discovery call helped turn my vague idea into a clear, actionable plan. Their hands-on brainstorming and sharp feedback played a key role in helping me secure a $5,000 grant in Vancouver. If you need clarity and direction, this is where it starts.",
+    name: "Dayakar Rayapureddy",
+    role: "President",
+    company: "Akhanda Seva Samsthan NGO",
+    stat: "$5,000 grant secured",
+    image: "/images/testimonials/dayakar-rayapureddy.png",
   },
   {
     quote:
-      "No decks, no jargon — just operators who sat inside our problem. They helped us hire two staff engineers and a Head of Growth in a single quarter.",
-    name: "Marcus Bello",
-    role: "Founder",
-    company: "Northwind AI",
-    stat: "3 senior hires",
+      "I had the pleasure of working directly with Mostafa as his Teaching Assistant for the MBA Marketing Management course at Simon Fraser University. He is an exceptional professor and mentor who brings clarity, structure, and energy to everything he does. His openness to new ideas, paired with a strong foundation in marketing strategy, created a dynamic and inclusive learning environment.",
+    name: "Tara Nichols",
+    role: "RN · MBA",
+    company: "Strategy and Operations",
+    stat: "Reported directly · 2025",
+    image: "/images/testimonials/tara-nichols.png",
   },
   {
     quote:
-      "The Plan phase alone paid for the engagement. We killed a feature that would have burned a year of runway and doubled down on what was working.",
-    name: "Priya Raman",
-    role: "COO",
-    company: "Cadence Labs",
-    stat: "9 mo. runway saved",
+      "Mostafa's depth of knowledge and passion for leveraging innovative technologies in marketing and business intelligence is truly inspiring. His guidance in business intelligence and data analytics has resulted in tangible improvements in customer acquisition and overall performance.",
+    name: "Afa Habibi",
+    role: "Senior Project Coordinator",
+    company: "Civil Construction",
+    stat: "Client · 2024",
+    image: "/images/testimonials/afa-habibi.png",
   },
   {
     quote:
-      "They speak founder and they speak protocol. Rare to find a team that can pressure-test tokenomics and org design in the same conversation.",
-    name: "Jonas Halvorsen",
-    role: "General Partner",
-    company: "Meridian Capital",
-    stat: "4 portfolio cos.",
+      "Over the last year, I had several consulting sessions with Nex3 discussing my Ed-Tech startup. The team has always provided insightful feedback on the business as well as actionable items on how to move forward. The team is sharp, knowledgeable, and above all, extremely visionary.",
+    name: "Iman Moazzen",
+    role: "CEO",
+    company: "Castofly",
+    stat: "Client · 2021",
+    image: "/images/testimonials/iman-moazzen.png",
   },
   {
     quote:
-      "We came in convinced we needed to raise. NEX3 showed us we needed to focus. Best strategic decision we made all year.",
-    name: "Amara Okonkwo",
-    role: "Co-founder",
-    company: "Sunfold",
-    stat: "2x conversion",
+      "He is an excellent consultant with great vision for technical marketing and data. His simple yet logical methods make you understand concepts. He believes in thinking big and outside the box, is patient, and is always ready to help.",
+    name: "Rishab Gupta",
+    role: "Senior Trade Operations Analyst",
+    company: "NextEra Energy",
+    stat: "Reported directly · 2020",
+    image: "/images/testimonials/rishab-gupta.png",
   },
   {
     quote:
-      "Fast, candid, and allergic to fluff. Every session ended with a decision I could act on the next morning.",
-    name: "David Chen",
-    role: "Head of Product",
-    company: "Relay Systems",
-    stat: "6-wk GTM",
+      "His patience on envisioning, his talent in data analysis, his focus on your need, and his direct-to-the-point solutions are what make him unique in his field.",
+    name: "Hashem Aletaha",
+    role: "Sales Manager ProAV & Events",
+    company: "Barco",
+    stat: "Worked together · 2010",
+    image: "/images/testimonials/hashem-aletaha.png",
   },
 ];
 
 const LOGOS = [
-  "LEDGERFRAME",
-  "NORTHWIND AI",
-  "CADENCE LABS",
-  "MERIDIAN",
-  "SUNFOLD",
-  "RELAY SYSTEMS",
+  "AKHANDA SEVA SAMSTHAN",
+  "STRATEGY & OPERATIONS",
+  "CIVIL CONSTRUCTION",
+  "CASTOFLY",
+  "NEXTERA ENERGY",
+  "BARCO",
 ];
 
 function Card({ t, i }) {
@@ -82,13 +88,20 @@ function Card({ t, i }) {
         </blockquote>
       </div>
       <figcaption className="mt-10 flex items-end justify-between border-t hairline pt-6">
-        <div>
-          <div className="font-display text-base tracking-tight">{t.name}</div>
-          <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
-            {t.role} · {t.company}
+        <div className="flex min-w-0 items-center gap-3">
+          <img
+            src={t.image}
+            alt=""
+            className="h-10 w-10 shrink-0 rounded-full border hairline object-cover"
+          />
+          <div className="min-w-0">
+            <div className="font-display text-base tracking-tight">{t.name}</div>
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--muted)]">
+              {t.role} · {t.company}
+            </div>
           </div>
         </div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--acid)]">
+        <div className="ml-3 max-w-[9rem] text-right font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--acid)]">
           {t.stat}
         </div>
       </figcaption>
@@ -132,8 +145,8 @@ export default function Testimonials() {
           transition={{ duration: 0.9, delay: 0.25 }}
           className="mt-8 max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-lg"
         >
-          Founders, operators, and investors on what changes when you replace
-          six-month decks with three clear decisions.
+          Founders, operators, and leaders on what changes when clear strategy
+          replaces noise, delay, and generic advice.
         </motion.p>
       </section>
 

@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, Sparkles, Image as ImageIcon, PenTool, Clapperboard, Menu, X } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  Sparkles,
+  Image as ImageIcon,
+  PenTool,
+  Clapperboard,
+  Menu,
+  X,
+  Minus,
+  Plus,
+} from "lucide-react";
 import {
   SiClaude,
   SiGooglegemini,
@@ -30,6 +41,7 @@ const TOOLS = [
 ];
 
 const MAX = 3;
+const COST_STEP = 20;
 
 export default function Audit() {
   const navigate = useNavigate();
@@ -39,6 +51,9 @@ export default function Audit() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [toolCosts, setToolCosts] = useState(() =>
+    Object.fromEntries(TOOLS.map((tool) => [tool.id, tool.price]))
+  );
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -67,7 +82,10 @@ export default function Audit() {
   };
 
   const picked = useMemo(() => TOOLS.filter((t) => selected.includes(t.id)), [selected]);
-  const currentCost = useMemo(() => picked.reduce((s, t) => s + t.price, 0), [picked]);
+  const currentCost = useMemo(
+    () => picked.reduce((sum, tool) => sum + toolCosts[tool.id], 0),
+    [picked, toolCosts]
+  );
   const localizedCost = useMemo(() => Math.max(9, Math.round(currentCost * 0.35)), [currentCost]);
   const savedPct = useMemo(
     () => (currentCost ? Math.round((1 - localizedCost / currentCost) * 100) : 0),
@@ -91,6 +109,19 @@ export default function Audit() {
       const el = document.querySelector("[data-testid=audit-results]");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 120);
+  };
+
+  const adjustToolCost = (id, delta) => {
+    setToolCosts((current) => ({
+      ...current,
+      [id]: Math.max(0, current[id] + delta),
+    }));
+  };
+
+  const setToolCost = (id, value) => {
+    const numericValue = String(value).replace(/[^0-9.]/g, "");
+    const nextValue = Math.max(0, Number(numericValue) || 0);
+    setToolCosts((current) => ({ ...current, [id]: nextValue }));
   };
 
   const bookCall = () => {
@@ -352,8 +383,9 @@ export default function Audit() {
                 <div className="mt-6 space-y-4 border-t border-dashed border-[var(--line)] pt-6">
                   {picked.map((t) => {
                     const Icon = t.Icon;
+                    const cost = toolCosts[t.id];
                     return (
-                      <div key={t.id} className="flex items-center justify-between text-sm">
+                      <div key={t.id} className="flex items-center justify-between gap-3 text-sm">
                         <span className="flex items-center gap-3 text-[var(--paper)]">
                           <span
                             className="flex h-7 w-7 items-center justify-center rounded-md"
@@ -363,7 +395,38 @@ export default function Audit() {
                           </span>
                           {t.name}
                         </span>
-                        <span className="font-mono text-[var(--paper)]">${t.price}</span>
+                        <div
+                          className="grid grid-cols-[2rem_3.75rem_2rem] items-center gap-1.5"
+                          aria-label={`${t.name} monthly cost`}
+                        >
+                          <button
+                            type="button"
+                            aria-label={`Decrease ${t.name} cost`}
+                            disabled={cost === 0}
+                            onClick={() => adjustToolCost(t.id, -COST_STEP)}
+                            className="grid h-8 w-8 place-items-center rounded-full border hairline bg-[var(--ink-3)] text-[var(--paper)] transition-colors hover:border-[var(--muted)] disabled:cursor-not-allowed disabled:opacity-30"
+                          >
+                            <Minus className="h-3.5 w-3.5" />
+                          </button>
+                          <label className="font-mono text-[var(--paper)]">
+                            <span className="sr-only">Set {t.name} monthly cost</span>
+                            <input
+                              type="text"
+                              inputMode="decimal"
+                              value={cost === 0 ? "" : `$${cost}`}
+                              onChange={(event) => setToolCost(t.id, event.target.value)}
+                              className="w-[3.75rem] border-0 border-b border-transparent bg-transparent px-0.5 py-1 text-center font-mono text-sm text-[var(--paper)] outline-none transition-colors hover:border-[var(--line)] focus:border-[var(--acid)]"
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            aria-label={`Increase ${t.name} cost`}
+                            onClick={() => adjustToolCost(t.id, COST_STEP)}
+                            className="grid h-8 w-8 place-items-center rounded-full border hairline bg-[var(--ink-3)] text-[var(--paper)] transition-colors hover:border-[var(--muted)]"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
                       </div>
                     );
                   })}

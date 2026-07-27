@@ -29,7 +29,7 @@ class EmailService {
         `Hi ${firstName},`,
         "",
         "Thank you for requesting our Ultimate Guide to Free AI.",
-        "Your personalized AI Budget Audit and Ultimate Guide to Free AI are attached to this email.",
+        "Your personalized NEX3 AI Bill Summary and Ultimate Guide to Free AI are attached to this email.",
         "",
         "Inside you'll discover:",
         "• Free ChatGPT alternatives",
@@ -46,7 +46,7 @@ class EmailService {
       ].join("\n"),
       attachments: [
         ...(auditPdf ? [{
-          filename: "NEX3-Personalized-AI-Budget-Audit.pdf",
+          filename: "NEX3-Personalized-AI-Bill-Summary.pdf",
           content: auditPdf,
           contentType: "application/pdf",
         }] : []),

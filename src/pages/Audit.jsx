@@ -182,7 +182,7 @@ export default function Audit() {
         },
       });
       setSent(true);
-      toast.success("Your audit PDF and Free AI Guide have been sent.");
+      toast.success("Your bill summary and Free AI Guide have been sent.");
     } catch (error) {
       toast.error(error.response?.data?.error || "Something went wrong. Please try again.");
     } finally {
@@ -553,12 +553,12 @@ export default function Audit() {
                 Get your free AI tools
               </h3>
               <p className="mx-auto mt-4 max-w-md text-sm text-[var(--muted)] sm:text-base">
-                We&rsquo;ll email your personalized audit PDF and the Ultimate Guide to Free AI.
+                We&rsquo;ll email your personalized bill summary and the Ultimate Guide to Free AI.
               </p>
               {sent ? (
                 <p data-testid="audit-sent" className="mt-8 font-mono text-sm text-[var(--acid)]">
                   ✅ Thank you!<br />
-                  Your personalized audit PDF and Free AI Guide have been sent to your email.<br />
+                  Your personalized bill summary and Free AI Guide have been sent to your email.<br />
                   If you don&rsquo;t see it within a minute, please check your Spam or Promotions folder.
                 </p>
               ) : (

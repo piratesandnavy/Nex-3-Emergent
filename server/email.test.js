@@ -41,7 +41,7 @@ test("sendToolkit attaches the personalized audit and Ultimate Guide PDFs", asyn
 
   assert.equal(sent.length, 1);
   assert.equal(sent[0].attachments.length, 2);
-  assert.equal(sent[0].attachments[0].filename, "NEX3-Personalized-AI-Budget-Audit.pdf");
+  assert.equal(sent[0].attachments[0].filename, "NEX3-Personalized-AI-Bill-Summary.pdf");
   assert.equal(sent[0].attachments[0].contentType, "application/pdf");
   assert.equal(sent[0].attachments[1].filename, "TheUltimateGuidetoFreeAI-NEX3_WithLogo.pdf");
 });

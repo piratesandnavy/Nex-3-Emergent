@@ -1,7 +1,13 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { createApp, normalizeEmail, isLeadMagnetRequest, normalizeChatRequest } = require("./app");
+const {
+  createApp,
+  normalizeEmail,
+  isLeadMagnetRequest,
+  normalizeChatRequest,
+  normalizeAuditRequest,
+} = require("./app");
 const ChatService = require("./services/ChatService");
 
 test("normalizeEmail accepts and normalizes a valid address", () => {
@@ -16,6 +22,26 @@ test("normalizeEmail rejects malformed and non-string values", () => {
 test("lead magnet matching is case insensitive", () => {
   assert.equal(isLeadMagnetRequest("Please send the FREE AI guide"), true);
   assert.equal(isLeadMagnetRequest("General consulting enquiry"), false);
+});
+
+test("normalizeAuditRequest recalculates trusted audit totals", () => {
+  const audit = normalizeAuditRequest({
+    items: [
+      { name: "Claude Pro", cost: 40 },
+      { name: "Notion AI", cost: 210 },
+      { name: "ElevenLabs", cost: 262 },
+      { name: "Midjourney", cost: 10 },
+    ],
+    localizedCost: 114,
+    savedPct: 1,
+  });
+  assert.equal(audit.currentCost, 522);
+  assert.equal(audit.savedAmount, 408);
+  assert.equal(audit.savedPct, 78);
+  assert.deepEqual(audit.localizedItems, [
+    { label: "Compute & hosting", value: 68 },
+    { label: "NEX3 maintenance", value: 46 },
+  ]);
 });
 
 test("normalizeChatRequest validates and sanitizes context", () => {
@@ -104,11 +130,25 @@ test("POST /api/free-tools validates input and completes delivery", async (t) =>
   const successResponse = await fetch(`${baseUrl}/api/free-tools`, {
     method: "POST",
     headers: { "content-type": "application/json", "user-agent": "Test Browser" },
-    body: JSON.stringify({ name: "Person Example", email: "person@example.com", message: "Get Free Tools Guide", landingPage: "/audit" }),
+    body: JSON.stringify({
+      name: "Person Example",
+      email: "person@example.com",
+      message: "Get Free Tools Guide",
+      landingPage: "/audit",
+      audit: {
+        items: [
+          { name: "Claude Pro", cost: 40 },
+          { name: "Notion AI", cost: 210 },
+        ],
+        localizedCost: 55,
+      },
+    }),
   });
   assert.equal(successResponse.status, 200);
   assert.deepEqual(await successResponse.json(), { success: true });
   assert.equal(savedLeads[0].status, "sent");
+  assert.equal(savedLeads[0].audit.currentCost, 250);
+  assert.equal(savedLeads[0].audit.savedPct, 78);
   assert.deepEqual(deliveries, [
     ["visitor", savedLeads[0]],
     ["notification", "person@example.com"],

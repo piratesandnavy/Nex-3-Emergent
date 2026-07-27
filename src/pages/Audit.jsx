@@ -173,9 +173,16 @@ export default function Audit() {
         message: form.message.trim() || "Get Free Tools Guide",
         referrer: document.referrer,
         landingPage: window.location.pathname,
+        audit: {
+          items: picked.map((tool) => ({
+            name: tool.name,
+            cost: toolCosts[tool.id],
+          })),
+          localizedCost,
+        },
       });
       setSent(true);
-      toast.success("Your Free AI Guide has been sent.");
+      toast.success("Your audit PDF and Free AI Guide have been sent.");
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
@@ -546,12 +553,12 @@ export default function Audit() {
                 Get your free AI tools
               </h3>
               <p className="mx-auto mt-4 max-w-md text-sm text-[var(--muted)] sm:text-base">
-                We&rsquo;ll send the full audit breakdown and the localized-AI starter kit.
+                We&rsquo;ll email your personalized audit PDF and the Ultimate Guide to Free AI.
               </p>
               {sent ? (
                 <p data-testid="audit-sent" className="mt-8 font-mono text-sm text-[var(--acid)]">
                   ✅ Thank you!<br />
-                  Your Free AI Guide has been sent to your email.<br />
+                  Your personalized audit PDF and Free AI Guide have been sent to your email.<br />
                   If you don&rsquo;t see it within a minute, please check your Spam or Promotions folder.
                 </p>
               ) : (

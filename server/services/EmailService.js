@@ -1,10 +1,12 @@
 const nodemailer = require("nodemailer");
+const AuditPdfService = require("./AuditPdfService");
 
 class EmailService {
-  constructor({ smtp, notificationEmail, toolkitPath, transporter }) {
+  constructor({ smtp, notificationEmail, toolkitPath, transporter, auditPdfService }) {
     this.from = smtp.from;
     this.notificationEmail = notificationEmail;
     this.toolkitPath = toolkitPath;
+    this.auditPdfService = auditPdfService || new AuditPdfService();
     this.transporter = transporter || nodemailer.createTransport({
       host: smtp.host,
       port: smtp.port,
@@ -16,6 +18,9 @@ class EmailService {
   async sendToolkit(leadOrEmail) {
     const lead = typeof leadOrEmail === "string" ? { email: leadOrEmail, name: "there" } : leadOrEmail;
     const firstName = lead.name.split(/\s+/)[0];
+    const auditPdf = lead.audit
+      ? await this.auditPdfService.create(lead.audit, lead)
+      : null;
     return this.transporter.sendMail({
       from: this.from,
       to: lead.email,
@@ -24,7 +29,7 @@ class EmailService {
         `Hi ${firstName},`,
         "",
         "Thank you for requesting our Ultimate Guide to Free AI.",
-        "Your guide is attached to this email.",
+        "Your personalized AI Budget Audit and Ultimate Guide to Free AI are attached to this email.",
         "",
         "Inside you'll discover:",
         "• Free ChatGPT alternatives",
@@ -40,6 +45,11 @@ class EmailService {
         "https://nex3.xyz",
       ].join("\n"),
       attachments: [
+        ...(auditPdf ? [{
+          filename: "NEX3-Personalized-AI-Budget-Audit.pdf",
+          content: auditPdf,
+          contentType: "application/pdf",
+        }] : []),
         {
           filename: "TheUltimateGuidetoFreeAI-NEX3_WithLogo.pdf",
           path: this.toolkitPath,

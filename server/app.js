@@ -56,6 +56,43 @@ function isLeadMagnetRequest(message) {
   return /\b(free tools|get free tools|free ai|ai tools|guide|pdf)\b/i.test(message);
 }
 
+function cleanMoney(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric < 0 || numeric > 100000) return null;
+  return Math.round(numeric);
+}
+
+function normalizeAuditRequest(audit) {
+  if (!audit || !Array.isArray(audit.items) || audit.items.length < 1 || audit.items.length > 10) {
+    return null;
+  }
+  const items = audit.items.map((item) => ({
+    name: cleanMetadata(item?.name, "", 80),
+    cost: cleanMoney(item?.cost),
+  }));
+  if (items.some((item) => !item.name || item.cost === null)) return null;
+
+  const currentCost = items.reduce((sum, item) => sum + item.cost, 0);
+  const localizedCost = cleanMoney(audit.localizedCost);
+  if (localizedCost === null) return null;
+  const savedAmount = Math.max(0, currentCost - localizedCost);
+  const savedPct = currentCost
+    ? Math.max(0, Math.round((1 - localizedCost / currentCost) * 100))
+    : 0;
+
+  return {
+    items,
+    currentCost,
+    localizedCost,
+    savedAmount,
+    savedPct,
+    localizedItems: [
+      { label: "Compute & hosting", value: Math.round(localizedCost * 0.6) },
+      { label: "NEX3 maintenance", value: localizedCost - Math.round(localizedCost * 0.6) },
+    ],
+  };
+}
+
 function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   const value = typeof forwarded === "string" ? forwarded.split(",")[0] : req.ip;
@@ -116,6 +153,7 @@ function createApp(dependencies = {}) {
     const email = normalizeEmail(req.body?.email);
     const company = cleanMetadata(req.body?.company, "Not provided", 200);
     const message = cleanMetadata(req.body?.message, "Get Free Tools Guide", 2000);
+    const audit = normalizeAuditRequest(req.body?.audit);
     if (!name || !email) {
       return res.status(400).json({ error: "Name and a valid email address are required." });
     }
@@ -141,6 +179,7 @@ function createApp(dependencies = {}) {
         userAgent: cleanMetadata(req.get("user-agent"), "Unavailable"),
         referrer: cleanMetadata(req.body?.referrer || req.get("referer"), "Direct / unavailable"),
         landingPage: cleanMetadata(req.body?.landingPage, "/audit", 500),
+        audit,
       });
 
       try {
@@ -170,4 +209,10 @@ function createApp(dependencies = {}) {
   return app;
 }
 
-module.exports = { createApp, normalizeEmail, isLeadMagnetRequest, normalizeChatRequest };
+module.exports = {
+  createApp,
+  normalizeEmail,
+  isLeadMagnetRequest,
+  normalizeChatRequest,
+  normalizeAuditRequest,
+};

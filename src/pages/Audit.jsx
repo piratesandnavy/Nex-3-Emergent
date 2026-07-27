@@ -40,7 +40,6 @@ const TOOLS = [
   { id: "runway", name: "Runway", Icon: Clapperboard, price: 15, bg: "#4FE0B0", fg: "#08261C" },
 ];
 
-const MAX = 1;
 const COST_STEP = 20;
 
 export default function Audit() {
@@ -76,7 +75,6 @@ export default function Audit() {
     if (audited) return;
     setSelected((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
-      if (prev.length >= MAX) return prev;
       return [...prev, id];
     });
   };
@@ -103,7 +101,7 @@ export default function Audit() {
   }, [localizedCost]);
 
   const runAudit = () => {
-    if (selected.length !== MAX) return;
+    if (selected.length === 0) return;
     setAudited(true);
     setTimeout(() => {
       const el = document.querySelector("[data-testid=audit-results]");
@@ -288,7 +286,7 @@ export default function Audit() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="mt-5 font-display text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl lg:text-8xl"
         >
-          Pick 1 AI You Pay For
+          Pick 3 AI You Pay For
         </motion.h1>
       </header>
 
@@ -297,19 +295,18 @@ export default function Audit() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {TOOLS.map((t) => {
             const isSel = selected.includes(t.id);
-            const disabled = !isSel && selected.length >= MAX;
             const Icon = t.Icon;
             return (
               <button
                 key={t.id}
                 data-testid={`tool-${t.id}`}
                 onClick={() => toggle(t.id)}
-                disabled={audited || disabled}
+                disabled={audited}
                 className={`relative flex flex-col items-center gap-4 rounded-2xl border p-6 transition-all duration-300 ${
                   isSel
                     ? "border-[var(--acid)] bg-[var(--ink-3)]"
                     : "hairline bg-[var(--ink-2)] hover:border-[var(--muted)]"
-                } ${disabled ? "opacity-35" : ""} disabled:cursor-not-allowed`}
+                } disabled:cursor-not-allowed`}
               >
                 {isSel && (
                   <span
@@ -332,7 +329,7 @@ export default function Audit() {
         </div>
 
         <p data-testid="selected-count" className="mt-10 text-center font-mono text-sm text-[var(--muted)]">
-          <span className="text-[var(--acid)]">{selected.length}</span> / {MAX} selected
+          <span className="text-[var(--acid)]">{selected.length}</span> selected
         </p>
 
         {/* Audit button — large & prominent, matching site buttons */}
@@ -340,9 +337,9 @@ export default function Audit() {
           <button
             data-testid="run-audit"
             onClick={runAudit}
-            disabled={selected.length !== MAX || audited}
+            disabled={selected.length === 0 || audited}
             className={`group relative w-full max-w-xs overflow-hidden rounded-full px-10 py-5 font-mono text-sm uppercase tracking-[0.3em] transition-all duration-300 ${
-              selected.length === MAX && !audited
+              selected.length > 0 && !audited
                 ? "bg-[var(--paper)] text-[var(--ink)]"
                 : "cursor-not-allowed border border-[var(--line)] text-[var(--muted)]"
             }`}
@@ -350,16 +347,16 @@ export default function Audit() {
             <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
               Run the Audit
             </span>
-            {selected.length === MAX && !audited && (
+            {selected.length > 0 && !audited && (
               <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
             )}
           </button>
           <p className="mt-4 font-mono text-xs tracking-wide text-[var(--muted)]">
             {audited
               ? "Audit complete"
-              : selected.length === MAX
+              : selected.length > 0
               ? "Ready to audit"
-              : `Pick ${MAX} ${MAX === 1 ? "tool" : "tools"} to run the audit`}
+              : "Pick 1 or more tools to run the audit"}
           </p>
         </div>
       </section>

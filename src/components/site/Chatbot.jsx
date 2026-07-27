@@ -1,37 +1,69 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   Bot,
+  Building2,
+  ChartNoAxesCombined,
   ChevronRight,
   CircleDollarSign,
   Clock3,
-  FileText,
-  GraduationCap,
-  LockKeyhole,
   MessageCircle,
   Paperclip,
   Puzzle,
   Send,
   ShieldCheck,
-  Users,
   X,
 } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
 const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || "https://nex-3-api.vercel.app"}/api/chat`;
-const FAQ_STORAGE_KEY = "nex3-faq-chat-v2";
+const FAQ_STORAGE_KEY = "nex3-faq-chat-v3";
 const POST_STORAGE_KEY = "nex3-post-chat-v2";
 const SUBMISSION_STORAGE_KEY = "nex3-submission-v2";
 const FAQ_GREETING = "Hi! I’m here to answer questions about Nex3’s services, workshops, capabilities, and how we work.";
 const MAX_MESSAGE_LENGTH = 1200;
 const TOPICS = [
-  { label: "What is an AI agent?", Icon: Bot },
-  { label: "How much does it cost?", Icon: CircleDollarSign },
-  { label: "Typical timelines", Icon: Clock3 },
-  { label: "Who do you work with?", Icon: Users },
-  { label: "What services do you offer?", Icon: Puzzle },
-  { label: "Tell me about the workshop", Icon: GraduationCap },
+  {
+    label: "What is an AI agent?",
+    Icon: Bot,
+    answer:
+      "An AI agent is a software system that can understand a goal, reason through the steps needed, and take useful actions with limited supervision. Nex3 helps teams identify practical agent use cases, design the right workflows, and build systems that fit the way their business actually operates.",
+  },
+  {
+    label: "How much does it cost for an organization?",
+    Icon: CircleDollarSign,
+    answer:
+      "The cost for an organization depends on the scope, complexity, team size, and stage of the work. After a short discovery conversation, Nex3 recommends a focused engagement with clear deliverables, timing, and cost—so your organization knows exactly what it is investing in before work begins.",
+  },
+  {
+    label: "How to audit your AI budget?",
+    Icon: ChartNoAxesCombined,
+    answer:
+      "Start by mapping every AI tool, model, vendor, experiment, and internal project to its owner, monthly cost, usage, business outcome, and risk. Nex3 can help identify duplicated spend, underused tools, hidden implementation costs, and high-value investments, then turn the findings into a practical AI budget and governance plan.",
+    cta: {
+      label: "Audit your AI budget",
+      href: "https://www.nex3.xyz/audit",
+    },
+  },
+  {
+    label: "Typical timelines",
+    Icon: Clock3,
+    answer:
+      "Most focused advisory and workshop engagements take days or a few weeks. Larger product, architecture, and implementation projects may run longer. Nex3 defines the milestones up front and keeps the work oriented around decisions and tangible outcomes.",
+  },
+  {
+    label: "What services do you offer?",
+    Icon: Puzzle,
+    answer:
+      "Nex3 helps leaders plan, build, and hire for the AI and Web3 economy. That includes strategy, market and product validation, technical architecture, AI agent design, token and go-to-market work, workshops, and support finding the operators and specialists needed to execute.",
+  },
+  {
+    label: "Which industries can use Nex3 services?",
+    Icon: Building2,
+    answer:
+      "Nex3 services can support organizations across financial services, education, professional services, hospitality, retail, technology, nonprofits, and other sectors. The work is industry-aware but begins with the specific business problem, decision, or goal your organization needs to address.",
+  },
 ];
 
 const loadStored = (key, fallback) => {
@@ -53,8 +85,6 @@ function confirmationMessage({ name = "", company = "" }) {
 }
 
 export default function Chatbot() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const initial = useRef(null);
   if (!initial.current) {
     const storedSubmission = loadStored(SUBMISSION_STORAGE_KEY, null);
@@ -129,12 +159,6 @@ export default function Chatbot() {
 
   useEffect(() => () => requestRef.current?.abort(), []);
 
-  const scrollToContact = () => {
-    setOpen(false);
-    if (location.pathname !== "/") navigate("/");
-    window.setTimeout(() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }), location.pathname === "/" ? 0 : 450);
-  };
-
   const sendMessage = async (value) => {
     const text = value.trim();
     if (!text || loading) return;
@@ -144,6 +168,17 @@ export default function Chatbot() {
     const nextMessages = [...messages, userMessage];
     setMessages(nextMessages);
     setLoading(true);
+    const topic = TOPICS.find(({ label }) => label.toLowerCase() === text.toLowerCase());
+    if (topic?.answer) {
+      window.setTimeout(() => {
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: topic.answer, cta: topic.cta || null },
+        ]);
+        setLoading(false);
+      }, 550);
+      return;
+    }
     const controller = new AbortController();
     requestRef.current = controller;
     try {
@@ -210,10 +245,6 @@ export default function Chatbot() {
             </div>
           </header>
           <div ref={historyRef} className="nex3-chat-history" role="log" aria-live="polite" aria-relevant="additions" data-lenis-prevent>
-            <div className="nex3-chat-status">
-              <span><i aria-hidden="true" />{mode === "post" ? "Inquiry received" : "Online"} <b>·</b> {mode === "post" ? "Reply in 1–2 business days" : "Typically replies instantly"}</span>
-              <span className="nex3-chat-secure"><LockKeyhole aria-hidden="true" />{mode === "post" ? "Separate inquiry chat" : "Secure & private"}</span>
-            </div>
             <div className="nex3-chat-messages">
               {messages.map((message, index) => message.role === "assistant" && index === 0 ? (
                 <div key={`${message.role}-${index}`} className="nex3-chat-welcome">
@@ -224,7 +255,20 @@ export default function Chatbot() {
                   </div>
                 </div>
               ) : (
-                <div key={`${message.role}-${index}`} className={`nex3-chat-message ${message.role}`}>{message.content}</div>
+                <div key={`${message.role}-${index}`}>
+                  <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
+                  {message.cta && (
+                    <a
+                      className="nex3-audit-cta"
+                      href={message.cta.href}
+                      aria-label={message.cta.label}
+                    >
+                      <span className="nex3-audit-cta-prompt" aria-hidden="true">&gt;_</span>
+                      <span className="nex3-audit-cta-label">{message.cta.label}</span>
+                      <span className="nex3-audit-cta-arrow" aria-hidden="true"><ArrowRight /></span>
+                    </a>
+                  )}
+                </div>
               ))}
               {loading && <div className="nex3-chat-message assistant nex3-chat-typing" aria-label="Assistant is typing"><i /><i /><i /></div>}
               {error && <div className="nex3-chat-error" role="alert">{error}</div>}
@@ -240,13 +284,6 @@ export default function Chatbot() {
                   ))}
                 </div>
               </section>
-            )}
-            {mode === "faq" && (
-              <button type="button" className="nex3-chat-contact" onClick={scrollToContact}>
-                <FileText aria-hidden="true" />
-                <span><b>Ready to discuss your project?</b><small>Fill out the inquiry form and we’ll be in touch.</small></span>
-                <strong>Go to Inquiry Form <span aria-hidden="true">→</span></strong>
-              </button>
             )}
           </div>
           <form className="nex3-chat-form" onSubmit={submit}>

@@ -183,8 +183,8 @@ export default function Audit() {
       });
       setSent(true);
       toast.success("Your audit PDF and Free AI Guide have been sent.");
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Something went wrong. Please try again.");
     } finally {
       setSending(false);
     }

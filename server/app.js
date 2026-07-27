@@ -157,10 +157,6 @@ function createApp(dependencies = {}) {
     if (!name || !email) {
       return res.status(400).json({ error: "Name and a valid email address are required." });
     }
-    if (!isLeadMagnetRequest(message)) {
-      return res.status(400).json({ error: "This endpoint only accepts Free AI Guide requests." });
-    }
-
     try {
       if (await leadStore.hasRecentSubmission(email, DUPLICATE_WINDOW_MS)) {
         return res.status(409).json({

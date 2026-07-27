@@ -133,7 +133,7 @@ test("POST /api/free-tools validates input and completes delivery", async (t) =>
     body: JSON.stringify({
       name: "Person Example",
       email: "person@example.com",
-      message: "Get Free Tools Guide",
+      message: "Hello",
       landingPage: "/audit",
       audit: {
         items: [

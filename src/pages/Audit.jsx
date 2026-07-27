@@ -11,6 +11,7 @@ import {
   X,
   Minus,
   Plus,
+  Info,
 } from "lucide-react";
 import {
   SiClaude,
@@ -50,6 +51,7 @@ export default function Audit() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openCostInfo, setOpenCostInfo] = useState(null);
   const [toolCosts, setToolCosts] = useState(() =>
     Object.fromEntries(TOOLS.map((tool) => [tool.id, tool.price]))
   );
@@ -84,19 +86,31 @@ export default function Audit() {
     () => picked.reduce((sum, tool) => sum + toolCosts[tool.id], 0),
     [picked, toolCosts]
   );
-  const localizedCost = useMemo(() => Math.max(9, Math.round(currentCost * 0.35)), [currentCost]);
+  const baselineCost = useMemo(
+    () => picked.reduce((sum, tool) => sum + tool.price, 0),
+    [picked]
+  );
+  const localizedCost = useMemo(() => Math.max(9, Math.round(baselineCost * 0.35)), [baselineCost]);
   const savedPct = useMemo(
-    () => (currentCost ? Math.round((1 - localizedCost / currentCost) * 100) : 0),
+    () => (currentCost ? Math.max(0, Math.round((1 - localizedCost / currentCost) * 100)) : 0),
     [currentCost, localizedCost]
   );
-  const savedAmount = useMemo(() => currentCost - localizedCost, [currentCost, localizedCost]);
+  const savedAmount = useMemo(() => Math.max(0, currentCost - localizedCost), [currentCost, localizedCost]);
   const localizedItems = useMemo(() => {
     const compute = Math.round(localizedCost * 0.6);
     const maintenance = localizedCost - compute;
     return [
       { label: "Self-hosted models", value: "$0" },
-      { label: "Compute & hosting", value: `$${compute}` },
-      { label: "NEX3 maintenance", value: `$${maintenance}` },
+      {
+        label: "Compute & hosting",
+        value: `$${compute}`,
+        description: "Estimated infrastructure for running your private AI: compute usage, secure hosting, storage, bandwidth, and monitoring.",
+      },
+      {
+        label: "NEX3 maintenance",
+        value: `$${maintenance}`,
+        description: "Ongoing model and system updates, security patches, performance optimization, troubleshooting, and technical support.",
+      },
     ];
   }, [localizedCost]);
 
@@ -469,8 +483,38 @@ export default function Audit() {
                 </div>
                 <div className="mt-6 space-y-4 border-t border-dashed border-[var(--line)] pt-6 text-sm">
                   {localizedItems.map((it) => (
-                    <div key={it.label} className="flex items-center justify-between">
-                      <span className="text-[var(--paper)]">{it.label}</span>
+                    <div key={it.label} className="flex items-center justify-between gap-4">
+                      <span className="flex items-center gap-2 text-[var(--paper)]">
+                        {it.label}
+                        {it.description && (
+                          <span className="relative">
+                            <button
+                              type="button"
+                              aria-label={`About ${it.label}`}
+                              aria-expanded={openCostInfo === it.label}
+                              onClick={() =>
+                                setOpenCostInfo((current) => (current === it.label ? null : it.label))
+                              }
+                              className="grid h-5 w-5 place-items-center rounded-full border border-[var(--line)] text-[var(--muted)] transition-colors hover:border-[var(--acid)] hover:text-[var(--acid)] focus:border-[var(--acid)] focus:text-[var(--acid)] focus:outline-none"
+                            >
+                              <Info className="h-3 w-3" />
+                            </button>
+                            <AnimatePresence>
+                              {openCostInfo === it.label && (
+                                <motion.span
+                                  role="tooltip"
+                                  initial={{ opacity: 0, y: 5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 5 }}
+                                  className="absolute bottom-8 left-0 z-20 w-64 rounded-xl border border-[var(--line)] bg-[var(--ink)] p-3 text-left text-xs leading-relaxed text-[var(--paper)] shadow-2xl"
+                                >
+                                  {it.description}
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
+                          </span>
+                        )}
+                      </span>
                       <span className="font-mono text-[var(--paper)]">{it.value}</span>
                     </div>
                   ))}

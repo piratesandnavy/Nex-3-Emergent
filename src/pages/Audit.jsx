@@ -90,7 +90,11 @@ export default function Audit() {
     () => picked.reduce((sum, tool) => sum + tool.price, 0),
     [picked]
   );
-  const localizedCost = useMemo(() => Math.max(9, Math.round(baselineCost * 0.35)), [baselineCost]);
+  const localizedCost = useMemo(() => {
+    const baselineLocalizedCost = baselineCost * 0.35;
+    const usageAdjustment = (currentCost - baselineCost) * 0.2;
+    return Math.max(9, Math.round(baselineLocalizedCost + usageAdjustment));
+  }, [baselineCost, currentCost]);
   const savedPct = useMemo(
     () => (currentCost ? Math.max(0, Math.round((1 - localizedCost / currentCost) * 100)) : 0),
     [currentCost, localizedCost]

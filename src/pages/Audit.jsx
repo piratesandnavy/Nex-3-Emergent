@@ -40,7 +40,7 @@ const TOOLS = [
   { id: "runway", name: "Runway", Icon: Clapperboard, price: 15, bg: "#4FE0B0", fg: "#08261C" },
 ];
 
-const MAX = 3;
+const MAX = 1;
 const COST_STEP = 20;
 
 export default function Audit() {
@@ -288,7 +288,7 @@ export default function Audit() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="mt-5 font-display text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl lg:text-8xl"
         >
-          Pick 3 AI You Pay For
+          Pick 1 AI You Pay For
         </motion.h1>
       </header>
 
@@ -359,7 +359,7 @@ export default function Audit() {
               ? "Audit complete"
               : selected.length === MAX
               ? "Ready to audit"
-              : `Pick ${MAX} tools to run the audit`}
+              : `Pick ${MAX} ${MAX === 1 ? "tool" : "tools"} to run the audit`}
           </p>
         </div>
       </section>

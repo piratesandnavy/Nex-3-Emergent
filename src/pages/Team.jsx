@@ -77,7 +77,7 @@ const PROGRAM = [
   { n: "04", t: "Career Support", d: "Guidance for applying to your dream jobs." },
 ];
 
-function LinkedInIcon() { return ( <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#0A66C2" /><circle cx="8.4" cy="8.4" r="1.6" fill="#fff" /><rect x="6.8" y="10.4" width="3.2" height="7.6" fill="#fff" /><path d="M11.6 18V10.4h3.2v1.3c.6-.9 1.6-1.5 2.9-1.5 2.3 0 3.5 1.5 3.5 4.1V18h-3.2v-3.4c0-1.1-.4-1.9-1.4-1.9-1 0-1.6.7-1.6 1.8V18h-3.2z" fill="#fff" /></svg>svg> ); }
+function LinkedInIcon() { return ( <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#0A66C2" /><circle cx="8.4" cy="8.4" r="1.6" fill="#fff" /><rect x="6.8" y="10.4" width="3.2" height="7.6" fill="#fff" /><path d="M11.6 18V10.4h3.2v1.3c.6-.9 1.6-1.5 2.9-1.5 2.3 0 3.5 1.5 3.5 4.1V18h-3.2v-3.4c0-1.1-.4-1.9-1.4-1.9-1 0-1.6.7-1.6 1.8V18h-3.2z" fill="#fff" /></svg> ); }
 
 function PersonCard({ p, i }) {
   return (

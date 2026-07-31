@@ -9,6 +9,7 @@ import Chatbot from "@/components/site/Chatbot";
 
 function App() {
   const basename = window.location.hostname.endsWith("github.io")
+    import SpringboardAlumni from "@/pages/SpringboardAlumni";
     ? "/Nex-3-Emergent"
     : "/";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/audit" element={<Audit />} />
+                <Route path="/springboard/alumni" element={<SpringboardAlumni />} />
         </Routes>
         <Chatbot />
       </BrowserRouter>

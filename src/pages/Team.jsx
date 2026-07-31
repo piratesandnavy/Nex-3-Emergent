@@ -118,10 +118,8 @@ function CTAButton({ cta }) { return ( <button type="button" onClick={cta.onClic
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   const scrollToSpringboard = () => {
-    const el = document.querySelector('[data-testid="internship-program"]');
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    window.location.href = `${SITE_BASE}/springboard/alumni`;
   };
 
   return (

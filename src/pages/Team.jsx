@@ -14,24 +14,28 @@ const CONSULTANTS = [
     role: "Senior Consultant · PhD, MBA",
     bio: "Leading expert in AI and Web3 business strategy with 15+ years helping companies navigate digital transformation. Specializes in strategic planning, technology integration, and organizational change.",
     image: "/images/team/mostafa-purmehdi.jpg",
+    linkedin: "https://www.linkedin.com/in/purmehdi/",
   },
   {
     name: "Mo Feyzbakhsh",
     role: "Digital Marketing Consultant",
     bio: "Owns the digital front of your company — web design, paid social campaigns, community building, content strategy, and growth hacking for digital-first businesses.",
     image: "/images/team/mo-feyzbakhsh.jpg",
+    linkedin: "https://www.linkedin.com/in/feyzbakhsh/",
   },
   {
     name: "Mansour Farhan",
     role: "AI & ML Consultant",
     bio: "Machine learning engineer and AI strategist with deep expertise in shipping AI solutions for business. Focuses on practical AI adoption and ROI optimization.",
     image: "/images/team/mansour-farhan.jpg",
+    linkedin: "https://linkedin.com/in/mansour-farhan",
   },
   {
     name: "Simon Pipel",
     role: "Products & Operations Consultant",
     bio: "Product strategy and operations expert focused on scaling your operations — from product development to operational efficiency and team management.",
     image: "/images/team/simon-pipel.jpg",
+    linkedin: "https://www.linkedin.com/in/simon-pipel/",
   },
 ];
 
@@ -41,24 +45,28 @@ const INTERNS = [
     role: "BI Intern",
     bio: "Business intelligence intern specializing in data analytics and insights. Passionate about leveraging data to drive strategic decisions.",
     image: "/images/team/raida-sarooj.jpg",
+    linkedin: "https://www.linkedin.com/in/raida-sarooj/",
   },
   {
     name: "Siddharth Manchanda",
     role: "AI Marketing & Sales Intern",
     bio: "AI marketing and sales specialist focused on using automation, data, and emerging tools to build smarter campaigns and sustainable growth.",
     image: "/images/team/siddharth-m.jpg",
+    linkedin: "https://www.linkedin.com/in/siddharthmspm",
   },
   {
     name: "Afrah Ameen",
     role: "Social Media Specialist Intern",
     bio: "Builds engaging online communities and crafts compelling content strategies, managing campaigns and social presence across platforms.",
     image: "/images/team/afrah-ameen.png",
+    linkedin: "https://www.linkedin.com/in/afrah-ameen/",
   },
   {
     name: "Dayakar Rayapureddy",
     role: "Sustainability & Leadership Intern",
     bio: "Leads the Youth for the Land program — mobilizing young changemakers around environmental stewardship and community-driven climate action.",
     image: "/images/team/dayakar-rayapureddy.png",
+    linkedin: "https://www.linkedin.com/in/dayakar-rayapureddy-018394195",
   },
 ];
 
@@ -68,6 +76,14 @@ const PROGRAM = [
   { n: "03", t: "Mentorship", d: "Work closely with industry experts and senior consultants." },
   { n: "04", t: "Career Support", d: "Guidance for applying to your dream jobs." },
 ];
+
+function LinkedInIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM7.114 20.452H3.556V9h3.558v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
 
 function PersonCard({ p, i }) {
   return (
@@ -91,7 +107,20 @@ function PersonCard({ p, i }) {
           NEX3
         </span>
       </div>
-      <h3 className="font-display text-xl tracking-tight sm:text-2xl">{p.name}</h3>
+      <h3 className="font-display text-xl tracking-tight sm:text-2xl flex items-center gap-2">
+        {p.name}
+        {p.linkedin && (
+          <a
+            href={p.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${p.name} on LinkedIn`}
+            className="inline-flex shrink-0 text-[var(--muted)] transition-colors hover:text-[var(--acid)]"
+          >
+            <LinkedInIcon />
+          </a>
+        )}
+      </h3>
       <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--acid)]">
         {p.role}
       </p>

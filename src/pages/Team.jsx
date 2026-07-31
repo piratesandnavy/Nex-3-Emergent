@@ -100,39 +100,20 @@ function PersonCard({ p, i }) {
   );
 }
 
-function Group({ label, count, people, offset = 0, cta }) {
+function CTAButton({ cta }) { return ( <button type="button" onClick={cta.onClick} className="group relative overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em]"><span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">{cta.label}</span><span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" /></button> ); } function Group({ label, count, people, offset = 0, cta, ctaPlacement = "top" }) {
   return (
     <div className="mb-24">
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b hairline pb-4">
         <h2 className="font-display text-2xl tracking-tight sm:text-3xl">{label}</h2>
         <div className="flex items-center gap-6">
-          {cta && (
-            <button
-              type="button"
-              onClick={cta.onClick}
-              className="group relative overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em]"
-            >
-              <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
-                {cta.label}
-              </span>
-              <span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
-            </button>
-          )}
+          {cta && ctaPlacement === "top" && <CTAButton cta={cta} />}
           <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--muted)]">
             {count} people
           </span>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-        {people.map((p, i) => (
-          <PersonCard key={p.name} p={p} i={i + offset} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default function Team() {
+        {people.map((p, i) => ( <PersonCard key={p.name} p={p} i={i + offset} /> ))} </div> {cta && ctaPlacement === "bottom" && (<div className="mt-12 flex justify-center"><CTAButton cta={cta} /></div>)} </div> ); } export default function Team() {
   useLenis();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -186,8 +167,7 @@ export default function Team() {
           count={INTERNS.length}
           people={INTERNS}
           offset={100}
-          cta={{ label: "Springboard Alumni", onClick: scrollToSpringboard }}
-        />
+          cta={{ label: "Springboard Alumni", onClick: scrollToSpringboard }} ctaPlacement="bottom" />
       </section>
 
       {/* Internship program */}

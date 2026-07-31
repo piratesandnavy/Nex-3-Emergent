@@ -100,14 +100,28 @@ function PersonCard({ p, i }) {
   );
 }
 
-function Group({ label, count, people, offset = 0 }) {
+function Group({ label, count, people, offset = 0, cta }) {
   return (
     <div className="mb-24">
-      <div className="mb-10 flex items-baseline justify-between border-b hairline pb-4">
+      <div className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b hairline pb-4">
         <h2 className="font-display text-2xl tracking-tight sm:text-3xl">{label}</h2>
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--muted)]">
-          {count} people
-        </span>
+        <div className="flex items-center gap-6">
+          {cta && (
+            <button
+              type="button"
+              onClick={cta.onClick}
+              className="group relative overflow-hidden rounded-full border border-[var(--paper)] px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em]"
+            >
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
+                {cta.label}
+              </span>
+              <span className="absolute inset-0 -z-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
+            </button>
+          )}
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[var(--muted)]">
+            {count} people
+          </span>
+        </div>
       </div>
       <div className="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
         {people.map((p, i) => (
@@ -123,6 +137,11 @@ export default function Team() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const scrollToSpringboard = () => {
+    const el = document.querySelector('[data-testid="internship-program"]');
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <main data-testid="team-page" className="relative bg-[var(--ink)]">
@@ -162,7 +181,13 @@ export default function Team() {
       {/* Groups */}
       <section className="mx-auto max-w-[1400px] px-5 sm:px-10">
         <Group label="Consultants" count={CONSULTANTS.length} people={CONSULTANTS} offset={0} />
-        <Group label="Interns" count={INTERNS.length} people={INTERNS} offset={100} />
+        <Group
+          label="Interns"
+          count={INTERNS.length}
+          people={INTERNS}
+          offset={100}
+          cta={{ label: "Springboard Alumni", onClick: scrollToSpringboard }}
+        />
       </section>
 
       {/* Internship program */}

@@ -49,7 +49,7 @@ const ALUMNI = [
     nowRole: "BI & Analytics Professional",
     nowDetail: "Recently placed in industry",
     image:
-      "https://nex3.lovable.app/lovable-uploads/bf0ec12d-5790-4c69-93cc-ded964fcc7c7.png",
+    "/images/team/hamed-aghaei.jpeg",
     linkedin: "https://www.linkedin.com/in/hamedaghaei/",
     quote:
       "I came in to learn the tools. I left with a way of thinking — model the data, then tell the story.",

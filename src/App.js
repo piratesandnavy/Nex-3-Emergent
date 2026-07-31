@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Landing from "@/pages/Landing";
 import Team from "@/pages/Team";
 import Testimonials from "@/pages/Testimonials";
+import SpringboardAlumni from "@/pages/SpringboardAlumni";
 import Audit from "@/pages/Audit";
 import Chatbot from "@/components/site/Chatbot";
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/audit" element={<Audit />} />
+        <Route path="/springboard/alumni" element={<SpringboardAlumni />} />
         </Routes>
         <Chatbot />
       </BrowserRouter>

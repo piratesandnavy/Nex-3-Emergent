@@ -24,6 +24,7 @@ import {
 import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import confetti from "canvas-confetti";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
 const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || "https://nex-3-api.vercel.app"}/api`;
@@ -43,6 +44,27 @@ const TOOLS = [
 
 const COST_STEP = 20;
 
+const AUDIT_OUTCOMES = [
+  {
+    id: "inventory",
+    number: "01",
+    title: "Inventory Current Spend",
+    description: "Full audit of existing AI tools, subscriptions, and vendor contracts.",
+  },
+  {
+    id: "overlap",
+    number: "02",
+    title: "Eliminate Waste & Overlap",
+    description: "Identify redundant spend and consolidate for efficiency.",
+  },
+  {
+    id: "roadmap",
+    number: "03",
+    title: "Build a 3-Year AI Roadmap",
+    description: "Prioritized, high-ROI automation projects aligned to your business goals.",
+  },
+];
+
 export default function Audit() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
@@ -52,6 +74,7 @@ export default function Audit() {
   const [sent, setSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openCostInfo, setOpenCostInfo] = useState(null);
+  const [activeOutcome, setActiveOutcome] = useState(null);
   const [toolCosts, setToolCosts] = useState(() =>
     Object.fromEntries(TOOLS.map((tool) => [tool.id, tool.price]))
   );
@@ -71,6 +94,52 @@ export default function Audit() {
       document.title = previousTitle;
       if (description && previousDescription) description.setAttribute("content", previousDescription);
     };
+  }, []);
+
+  useEffect(() => {
+    (function initializeCal(C, A, L) {
+      const push = (api, args) => api.q.push(args);
+      const documentRef = C.document;
+
+      C.Cal = C.Cal || function calEmbed() {
+        const cal = C.Cal;
+        const args = arguments;
+
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          documentRef.head.appendChild(documentRef.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+
+        if (args[0] === L) {
+          const api = function calNamespaceApi() {
+            push(api, arguments);
+          };
+          const namespace = args[1];
+          api.q = api.q || [];
+
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            push(cal.ns[namespace], args);
+            push(cal, ["initNamespace", namespace]);
+          } else {
+            push(cal, args);
+          }
+          return;
+        }
+
+        push(cal, args);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    window.Cal("init", "30min", { origin: "https://app.cal.com" });
+    window.Cal.config = window.Cal.config || {};
+    window.Cal.config.forwardQueryParams = true;
+    window.Cal.ns["30min"]("ui", {
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
   }, []);
 
   const toggle = (id) => {
@@ -138,6 +207,59 @@ export default function Audit() {
     const numericValue = String(value).replace(/[^0-9.]/g, "");
     const nextValue = Math.max(0, Number(numericValue) || 0);
     setToolCosts((current) => ({ ...current, [id]: nextValue }));
+  };
+
+  const celebrateRoadmap = (element) => {
+    const bounds = element.getBoundingClientRect();
+    const colors = ["#CDFF4E", "#00D7FF", "#087CFA", "#7C3CFF", "#FF3CC7"];
+    const origin = {
+      x: (bounds.left + bounds.width / 2) / window.innerWidth,
+      y: (bounds.top + bounds.height * 0.58) / window.innerHeight,
+    };
+    const sharedOptions = {
+      colors,
+      disableForReducedMotion: true,
+      ticks: 190,
+      gravity: 1.05,
+      decay: 0.92,
+      scalar: 0.95,
+      zIndex: 9999,
+    };
+
+    confetti({
+      ...sharedOptions,
+      particleCount: 65,
+      angle: 58,
+      spread: 72,
+      startVelocity: 48,
+      origin: { x: 0, y: 0.78 },
+    });
+    confetti({
+      ...sharedOptions,
+      particleCount: 65,
+      angle: 122,
+      spread: 72,
+      startVelocity: 48,
+      origin: { x: 1, y: 0.78 },
+    });
+    confetti({
+      ...sharedOptions,
+      particleCount: 90,
+      spread: 105,
+      startVelocity: 34,
+      origin,
+    });
+  };
+
+  const selectOutcome = (outcome, event) => {
+    setActiveOutcome((current) => current === outcome.id ? null : outcome.id);
+    if (outcome.id === "inventory") {
+      document.querySelector("[data-testid=tool-picker]")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+    if (outcome.id === "roadmap") celebrateRoadmap(event.currentTarget);
   };
 
   const bookCall = () => {
@@ -316,7 +438,7 @@ export default function Audit() {
       </header>
 
       {/* Picker */}
-      <section className="mx-auto max-w-[1300px] px-5 pt-20 sm:px-10">
+      <section data-testid="tool-picker" className="mx-auto max-w-[1300px] px-5 pt-20 sm:px-10">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {TOOLS.map((t) => {
             const isSel = selected.includes(t.id);
@@ -352,6 +474,67 @@ export default function Audit() {
             );
           })}
         </div>
+
+        <section className="audit-outcomes" aria-labelledby="audit-outcomes-title">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+          >
+            <span className="audit-outcomes__eyebrow">
+              <span aria-hidden="true">{audited ? "✓" : "→"}</span>
+              {audited ? "Audit complete" : "Your audit unlocks"}
+            </span>
+            <h2 id="audit-outcomes-title">Here&rsquo;s what comes next.</h2>
+            <p>Three clear steps from insight to impact.</p>
+          </motion.div>
+
+          <div className="audit-outcomes__path">
+            {AUDIT_OUTCOMES.map((outcome, index) => {
+              const isActive = activeOutcome === outcome.id;
+              return (
+                <div className="audit-outcomes__path-item" key={outcome.id}>
+                  <motion.button
+                    type="button"
+                    data-testid={`audit-outcome-${outcome.id}`}
+                    data-cal-link={outcome.id === "overlap" ? "purmehdi/30min" : undefined}
+                    data-cal-namespace={outcome.id === "overlap" ? "30min" : undefined}
+                    data-cal-config={
+                      outcome.id === "overlap"
+                        ? '{"layout":"month_view","useSlotsViewOnSmallScreen":true}'
+                        : undefined
+                    }
+                    aria-pressed={isActive}
+                    onClick={(event) => selectOutcome(outcome, event)}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: 0.18 + index * 0.12 }}
+                    whileTap={{ scale: 0.985 }}
+                    className={`audit-outcome ${isActive ? "is-active" : ""}`}
+                  >
+                    <span className="audit-outcome__fill" aria-hidden="true" />
+                    <span className="audit-outcome__content">
+                      <span className="audit-outcome__number">{outcome.number}</span>
+                      <strong>{outcome.title}</strong>
+                      <span className="audit-outcome__description">{outcome.description}</span>
+                      <span className="audit-outcome__hint">
+                        {isActive ? "Selected" : "Explore step"}
+                        <ArrowRight aria-hidden="true" />
+                      </span>
+                    </span>
+                  </motion.button>
+
+                  {index < AUDIT_OUTCOMES.length - 1 && (
+                    <div className="audit-outcomes__connector" aria-hidden="true">
+                      <span />
+                      <ArrowRight />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         <p data-testid="selected-count" className="mt-10 text-center font-mono text-sm text-[var(--muted)]">
           <span className="text-[var(--acid)]">{selected.length}</span> selected
@@ -396,6 +579,10 @@ export default function Audit() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="mx-auto max-w-[1100px] px-5 pt-24 sm:px-10"
           >
+            <div className="audit-results-label">
+              <span>Cost comparison</span>
+            </div>
+
             <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-[1fr_auto_1fr]">
               {/* Your bill */}
               <div className="flex flex-col rounded-2xl border hairline bg-[var(--ink-2)] p-8">

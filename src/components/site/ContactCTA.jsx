@@ -270,15 +270,16 @@ export default function ContactCTA({ careers = false }) {
               data-testid="discovery-card"
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.99 }}
-              className="group relative min-h-[320px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] hover:bg-[var(--acid)] hover:text-[var(--ink)] sm:p-10"
+              className="group relative min-h-[320px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] sm:p-10"
             >
-              <div className="flex items-start justify-between">
-                <CalendarDays className="h-8 w-8 text-[var(--acid)] transition-colors group-hover:text-[var(--ink)]" strokeWidth={1.8} />
-                <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)]" strokeWidth={1.5} />
+              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0" />
+              <div className="relative z-10 flex items-start justify-between">
+                <CalendarDays className="h-8 w-8 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.8} />
+                <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.5} />
               </div>
-              <div className="mt-9 max-w-xl">
-                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em]">Book a Discovery Call</h3>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors group-hover:text-[var(--ink)]">30-minute strategy session — no commitment required.</p>
+              <div className="relative z-10 mt-9 max-w-xl">
+                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Book a Discovery Call</h3>
+                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">30-minute strategy session — no commitment required.</p>
               </div>
             </motion.a>
 
@@ -288,16 +289,17 @@ export default function ContactCTA({ careers = false }) {
               onClick={() => setProposalOpen(true)}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.99 }}
-              className="group relative min-h-[320px] overflow-hidden rounded-[22px] border border-[var(--acid)] bg-[var(--acid)] p-8 text-left text-[var(--ink)] transition-transform duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:p-10"
+              className="group relative min-h-[320px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--acid)] sm:p-10"
               aria-haspopup="dialog"
             >
-              <div className="flex items-start justify-between">
-                <ClipboardList className="h-8 w-8 text-[var(--ink)]" strokeWidth={1.8} />
-                <ArrowRight className="h-7 w-7 text-[var(--ink)] transition-transform duration-300 group-hover:translate-x-2" strokeWidth={1.5} />
+              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0" />
+              <div className="relative z-10 flex items-start justify-between">
+                <ClipboardList className="h-8 w-8 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.8} />
+                <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.5} />
               </div>
-              <div className="mt-9 max-w-xl">
-                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em]">Request a Proposal</h3>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--ink)]">Get a scoped plan and pricing tailored to your organization.</p>
+              <div className="relative z-10 mt-9 max-w-xl">
+                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Request a Proposal</h3>
+                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Get a scoped plan and pricing tailored to your organization.</p>
               </div>
             </motion.button>
 
@@ -319,15 +321,16 @@ export default function ContactCTA({ careers = false }) {
               data-testid="workshop-card"
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.99 }}
-              className="group relative min-h-[250px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] hover:bg-[var(--acid)] hover:text-[var(--ink)] sm:p-10 md:col-span-2"
+              className="group relative min-h-[250px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] sm:p-10 md:col-span-2"
             >
-              <div className="flex items-start justify-between">
-                <GraduationCap className="h-8 w-8 text-[var(--acid)] transition-colors group-hover:text-[var(--ink)]" strokeWidth={1.8} />
-                <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)]" strokeWidth={1.5} />
+              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0" />
+              <div className="relative z-10 flex items-start justify-between">
+                <GraduationCap className="h-8 w-8 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.8} />
+                <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.5} />
               </div>
-              <div className="mt-9 max-w-4xl">
-                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em]">Start with a Workshop</h3>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors group-hover:text-[var(--ink)]">Executive briefings available within 2 weeks of engagement.</p>
+              <div className="relative z-10 mt-9 max-w-4xl">
+                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Start with a Workshop</h3>
+                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Executive briefings available within 2 weeks of engagement.</p>
               </div>
             </motion.a>
           </div>

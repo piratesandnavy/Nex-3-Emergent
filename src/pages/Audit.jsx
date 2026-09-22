@@ -254,7 +254,7 @@ export default function Audit() {
   const selectOutcome = (outcome, event) => {
     setActiveOutcome((current) => current === outcome.id ? null : outcome.id);
     if (outcome.id === "inventory") {
-      document.querySelector("[data-testid=tool-picker]")?.scrollIntoView({
+      document.querySelector("[data-testid=audit-page]")?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });

@@ -1,12 +1,37 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays, ClipboardList, GraduationCap } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
 
 const CONTACT_EMAIL = "nex3info@gmail.com";
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
 const UPLOAD_ENDPOINT = `https://formsubmit.co/${CONTACT_EMAIL}`;
+
+const CONTACT_OPTIONS = [
+  {
+    title: "Book a Discovery Call",
+    description: "30-minute strategy session — no commitment required.",
+    icon: CalendarDays,
+    href: "https://cal.com/purmehdi/30min",
+    calLink: "purmehdi/30min",
+    calNamespace: "30min",
+    calConfig: '{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}',
+  },
+  {
+    title: "Request a Proposal",
+    description: "Get a scoped plan and pricing tailored to your organization.",
+    icon: ClipboardList,
+    href: `mailto:${CONTACT_EMAIL}?subject=Request%20a%20Proposal`,
+  },
+  {
+    title: "Start with a Workshop",
+    description: "Executive briefings available within 2 weeks of engagement.",
+    icon: GraduationCap,
+    href: `mailto:${CONTACT_EMAIL}?subject=Start%20with%20a%20Workshop`,
+    wide: true,
+  },
+];
 
 export default function ContactCTA({ careers = false }) {
   const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
@@ -139,7 +164,7 @@ export default function ContactCTA({ careers = false }) {
           </div>
         </div>
 
-        <form
+        {careers ? <form
           onSubmit={submit}
           action={careers ? UPLOAD_ENDPOINT : undefined}
           method={careers ? "POST" : undefined}
@@ -242,7 +267,59 @@ export default function ContactCTA({ careers = false }) {
             </span>
             <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
           </motion.button>
-        </form>
+        </form> : (
+          <div
+            data-testid="contact-options"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-7"
+          >
+            {CONTACT_OPTIONS.map(({
+              title,
+              description,
+              icon: Icon,
+              href,
+              wide,
+              calLink,
+              calNamespace,
+              calConfig,
+            }) => (
+              <motion.a
+                key={title}
+                href={href}
+                data-cal-link={calLink}
+                data-cal-namespace={calNamespace}
+                data-cal-config={calConfig}
+                onClick={(event) => {
+                  if (!calLink || !window.Cal?.ns?.[calNamespace]) return;
+                  event.preventDefault();
+                  event.stopPropagation();
+                  window.Cal.ns[calNamespace]("modal", {
+                    calLink,
+                    config: JSON.parse(calConfig),
+                  });
+                }}
+                whileTap={{ scale: 0.985 }}
+                data-testid={`contact-option-${title.toLowerCase().replaceAll(" ", "-")}`}
+                className={`group relative min-h-[230px] overflow-hidden rounded-2xl border hairline bg-[var(--ink-3)] p-7 sm:p-8 ${
+                  wide ? "sm:col-span-2 sm:min-h-[205px]" : ""
+                }`}
+              >
+                <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0" />
+                <span className="relative z-10 flex h-full flex-col">
+                  <span className="flex items-start justify-between gap-5">
+                    <Icon className="h-7 w-7 shrink-0 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)]" />
+                    <ArrowRight className="h-5 w-5 shrink-0 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--ink)] group-focus-visible:translate-x-1 group-focus-visible:text-[var(--ink)]" />
+                  </span>
+                  <h3 className="font-display mt-6 text-2xl font-semibold leading-tight tracking-tight text-[var(--paper)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] sm:text-3xl">
+                    {title}
+                  </h3>
+                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] sm:text-lg">
+                    {description}
+                  </p>
+                </span>
+              </motion.a>
+            ))}
+          </div>
+        )}
         {careers && (
           <iframe
             name="career-submission-frame"

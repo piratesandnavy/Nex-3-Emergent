@@ -475,6 +475,38 @@ export default function Audit() {
           })}
         </div>
 
+        <p data-testid="selected-count" className="mt-10 text-center font-mono text-sm text-[var(--muted)]">
+          <span className="text-[var(--acid)]">{selected.length}</span> selected
+        </p>
+
+        {/* Audit button — large & prominent, matching site buttons */}
+        <div className="mt-10 flex flex-col items-center">
+          <button
+            data-testid="run-audit"
+            onClick={runAudit}
+            disabled={selected.length === 0 || audited}
+            className={`group relative w-full max-w-xs overflow-hidden rounded-full px-10 py-5 font-mono text-sm uppercase tracking-[0.3em] transition-all duration-300 ${
+              selected.length > 0 && !audited
+                ? "bg-[var(--paper)] text-[var(--ink)]"
+                : "cursor-not-allowed border border-[var(--line)] text-[var(--muted)]"
+            }`}
+          >
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
+              Run the Audit
+            </span>
+            {selected.length > 0 && !audited && (
+              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
+            )}
+          </button>
+          <p className="mt-4 font-mono text-xs tracking-wide text-[var(--muted)]">
+            {audited
+              ? "Audit complete"
+              : selected.length > 0
+              ? "Ready to audit"
+              : "Pick 1 or more tools to run the audit"}
+          </p>
+        </div>
+
         <section className="audit-outcomes" aria-labelledby="audit-outcomes-title">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -535,38 +567,6 @@ export default function Audit() {
             })}
           </div>
         </section>
-
-        <p data-testid="selected-count" className="mt-10 text-center font-mono text-sm text-[var(--muted)]">
-          <span className="text-[var(--acid)]">{selected.length}</span> selected
-        </p>
-
-        {/* Audit button — large & prominent, matching site buttons */}
-        <div className="mt-10 flex flex-col items-center">
-          <button
-            data-testid="run-audit"
-            onClick={runAudit}
-            disabled={selected.length === 0 || audited}
-            className={`group relative w-full max-w-xs overflow-hidden rounded-full px-10 py-5 font-mono text-sm uppercase tracking-[0.3em] transition-all duration-300 ${
-              selected.length > 0 && !audited
-                ? "bg-[var(--paper)] text-[var(--ink)]"
-                : "cursor-not-allowed border border-[var(--line)] text-[var(--muted)]"
-            }`}
-          >
-            <span className="relative z-10 transition-colors duration-300 group-hover:text-[var(--ink)]">
-              Run the Audit
-            </span>
-            {selected.length > 0 && !audited && (
-              <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
-            )}
-          </button>
-          <p className="mt-4 font-mono text-xs tracking-wide text-[var(--muted)]">
-            {audited
-              ? "Audit complete"
-              : selected.length > 0
-              ? "Ready to audit"
-              : "Pick 1 or more tools to run the audit"}
-          </p>
-        </div>
       </section>
 
       {/* Results — dark, on-theme */}

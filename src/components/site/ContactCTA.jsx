@@ -233,12 +233,7 @@ export default function ContactCTA({ careers = false }) {
           <h2 className="font-display mt-5 text-3xl leading-[1.05] tracking-tight sm:text-5xl">
             {careers
               ? "Join our team for internships and other positions."
-              : (
-                <>
-                  <span className="block">Let’s make your next three decisions the right ones.</span>
-                  <span className="block">Ready to Build Smarter?</span>
-                </>
-              )}
+              : "Let’s make your next three decisions the right ones."}
           </h2>
           <p className="mt-5 max-w-md text-base text-[var(--muted)] sm:text-lg">
             {careers ? (
@@ -248,7 +243,10 @@ export default function ContactCTA({ careers = false }) {
                 and take the first step towards building your professional future in Canada&apos;s tech ecosystem.
               </>
             ) : (
-              <>Whether you&apos;re starting with a workshop or ready for full agent deployment, Nex3 meets you where you are. Let&apos;s map out your AI strategy together.</>
+              <>
+                <span className="block">Ready to Build Smarter?</span>
+                Whether you&apos;re starting with a workshop or ready for full agent deployment, Nex3 meets you where you are. Let&apos;s map out your AI strategy together.
+              </>
             )}
           </p>
           <div className="mt-12 w-40 opacity-70">

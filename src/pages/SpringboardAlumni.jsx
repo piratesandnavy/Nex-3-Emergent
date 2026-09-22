@@ -5,7 +5,7 @@ import Nav from "@/components/site/Nav";
 import ContactCTA from "@/components/site/ContactCTA";
 
 const STATS = [
-  { value: "2", label: "Alumni placed" },
+  { value: "3", label: "Alumni placed" },
   { value: "100%", label: "Job placement" },
   { value: "200+", label: "Mentor-hours invested" },
   { value: "10+", label: "Projects shipped" },

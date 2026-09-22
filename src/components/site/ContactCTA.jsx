@@ -13,9 +13,11 @@ export default function ContactCTA({ careers = false }) {
   const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
   const [position, setPosition] = useState("");
   const [resume, setResume] = useState(null);
+  const [projectSpec, setProjectSpec] = useState(null);
   const [loading, setLoading] = useState(false);
   const [proposalOpen, setProposalOpen] = useState(false);
   const resumeInput = useRef(null);
+  const projectSpecInput = useRef(null);
   const closeButton = useRef(null);
   const submissionPending = useRef(false);
 
@@ -50,9 +52,19 @@ export default function ContactCTA({ careers = false }) {
       toast.error("LinkedIn, position, cover letter, and résumé are required.");
       return;
     }
+    if (!careers && !projectSpec) {
+      e.preventDefault();
+      toast.error("RFP / Project Spec is required.");
+      return;
+    }
     if (resume && resume.size > 10 * 1024 * 1024) {
       e.preventDefault();
       toast.error("Your résumé must be smaller than 10 MB.");
+      return;
+    }
+    if (projectSpec && projectSpec.size > 10 * 1024 * 1024) {
+      e.preventDefault();
+      toast.error("Your RFP / Project Spec must be smaller than 10 MB.");
       return;
     }
 
@@ -70,6 +82,7 @@ export default function ContactCTA({ careers = false }) {
       payload.append("email", form.email.trim());
       payload.append("company", form.company.trim() || "Not provided");
       payload.append("message", form.message.trim() || "No message provided.");
+      payload.append("attachment", projectSpec);
       payload.append("_subject", `NEX3 website enquiry from ${form.name.trim()}`);
       payload.append("_template", "table");
       payload.append("_captcha", "false");
@@ -98,7 +111,9 @@ export default function ContactCTA({ careers = false }) {
       setForm({ name: "", email: "", company: "", message: "" });
       setPosition("");
       setResume(null);
+      setProjectSpec(null);
       if (resumeInput.current) resumeInput.current.value = "";
+      if (projectSpecInput.current) projectSpecInput.current.value = "";
     } catch (error) {
       toast.error("Your message could not be sent. Please try again.");
     } finally {
@@ -203,19 +218,36 @@ export default function ContactCTA({ careers = false }) {
           <input type="hidden" name="_url" value="https://nex3.xyz/team" />
         </>
       )}
-      <motion.button
-        data-testid="lead-submit"
-        type="submit"
-        disabled={loading}
-        whileTap={{ scale: 0.98 }}
-        className={`${modal ? "self-start" : ""} group relative mt-2 flex items-center justify-center overflow-hidden rounded-full bg-[var(--paper)] px-8 py-4 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--ink)] disabled:cursor-wait disabled:opacity-60`}
-      >
-        <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[var(--ink)]">
-          {loading ? (careers ? "Applying…" : "Sending…") : careers ? "Apply Now" : "Send it over"}
-          <ArrowRight className="h-4 w-4" />
-        </span>
-        <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
-      </motion.button>
+      <div className={modal ? "mt-2 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between" : "contents"}>
+        {modal && !careers && (
+          <label className="flex w-full max-w-xl flex-col gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted)]">
+            <span>RFP / Project Spec * · PDF, DOC, or DOCX · Max 10 MB</span>
+            <input
+              ref={projectSpecInput}
+              data-testid="lead-project-spec"
+              name="project_spec"
+              type="file"
+              required
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              onChange={(e) => setProjectSpec(e.target.files?.[0] || null)}
+              className="text-sm normal-case tracking-normal text-[var(--paper)] file:mr-4 file:rounded-full file:border-0 file:bg-[var(--paper)] file:px-6 file:py-3 file:font-mono file:text-[11px] file:uppercase file:tracking-[0.15em] file:text-[var(--ink)]"
+            />
+          </label>
+        )}
+        <motion.button
+          data-testid="lead-submit"
+          type="submit"
+          disabled={loading}
+          whileTap={{ scale: 0.98 }}
+          className={`${modal ? "shrink-0 sm:ml-auto" : "mt-2"} group relative flex items-center justify-center overflow-hidden rounded-full bg-[var(--paper)] px-8 py-4 font-mono text-[12px] uppercase tracking-[0.18em] text-[var(--ink)] disabled:cursor-wait disabled:opacity-60`}
+        >
+          <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover:text-[var(--ink)]">
+            {loading ? (careers ? "Applying…" : "Sending…") : careers ? "Apply Now" : "Send it over"}
+            <ArrowRight className="h-4 w-4" />
+          </span>
+          <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 group-hover:translate-y-0" />
+        </motion.button>
+      </div>
     </form>
   );
 

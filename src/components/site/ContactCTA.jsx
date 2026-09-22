@@ -233,7 +233,7 @@ export default function ContactCTA({ careers = false }) {
           <h2 className="font-display mt-5 text-3xl leading-[1.05] tracking-tight sm:text-5xl">
             {careers
               ? "Join our team for internships and other positions."
-              : "Ready to Build Smarter?"}
+              : "Let’s make your next three decisions the right ones."}
           </h2>
           <p className="mt-5 max-w-md text-base text-[var(--muted)] sm:text-lg">
             {careers ? (

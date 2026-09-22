@@ -50,6 +50,7 @@ const ALUMNI = [
     nowDetail:
       "Building a career in Canada with hands-on AI-enabled marketing experience",
     image: "/images/team/afrah-ameen.png",
+    linkedin: "https://www.linkedin.com/in/afrah-ameen/",
     quote:
       "Consistent, systematic execution beats chasing isolated viral moments.",
     journey:

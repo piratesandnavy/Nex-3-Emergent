@@ -3,6 +3,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
+  CalendarDays,
+  CircleHelp,
+  FileText,
+  LayoutGrid,
   Building2,
   ChartNoAxesCombined,
   ChevronRight,
@@ -12,7 +16,6 @@ import {
   Paperclip,
   Puzzle,
   Send,
-  ShieldCheck,
   X,
 } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
@@ -23,6 +26,12 @@ const POST_STORAGE_KEY = "nex3-post-chat-v2";
 const SUBMISSION_STORAGE_KEY = "nex3-submission-v2";
 const FAQ_GREETING = "Get answers on AI strategy, implementation, and ROI for your organization";
 const MAX_MESSAGE_LENGTH = 1200;
+const SIDEBAR_LINKS = [
+  { label: "Services", Icon: LayoutGrid, href: "/#approach" },
+  { label: "Resources", Icon: FileText, href: "/audit" },
+  { label: "Book a Call", Icon: CalendarDays, href: "https://cal.com/purmehdi/30min", external: true },
+  { label: "Help", Icon: CircleHelp, href: "/#contact" },
+];
 const TOPICS = [
   {
     label: "What is an AI agent?",
@@ -144,7 +153,14 @@ export default function Chatbot() {
       if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     };
     document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.__lenis?.stop?.();
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = previousOverflow;
+      window.__lenis?.start?.();
+    };
   }, [open]);
 
   useEffect(() => {
@@ -214,86 +230,114 @@ export default function Chatbot() {
     setOpen(true);
   };
 
+  const showHome = mode === "faq" && messages.length === 1;
+
   return (
     <aside className="nex3-chat" aria-label="Nex3 AI Assistant">
       <AnimatePresence>
         {open && (
+        <motion.div
+          key="nex3-chat-overlay"
+          className="nex3-chat-overlay"
+          data-lenis-prevent
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}
+        >
         <motion.section
           ref={panel}
           className="nex3-chat-panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby="nex3-chat-title"
-          initial={{ opacity: 0, scale: 0.9, y: 28 }}
+          initial={{ opacity: 0, scale: 0.9, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 18 }}
-          transition={{ type: "spring", stiffness: 330, damping: 28, mass: 0.8 }}
+          exit={{ opacity: 0, scale: 0.95, y: 8 }}
+          transition={{ type: "spring", stiffness: 320, damping: 28, mass: 0.8 }}
         >
-          <header className="nex3-chat-header">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="nex3-chat-mark">
-                <Nex3Logo animate={false} className="nex3-chat-wordmark" />
-                <span>INC.</span>
-              </span>
-              <div className="min-w-0">
-                <span className="nex3-chat-kicker">{mode === "post" ? "Inquiry Desk · Received" : "AI Desk · Online"}</span>
-                <h2 id="nex3-chat-title" className="font-display">{mode === "post" ? "Inquiry Assistant" : "Nex3 Assistant"}</h2>
-              </div>
-            </div>
-            <div className="flex gap-1">
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close chat"><X /></button>
-            </div>
-          </header>
-          <div ref={historyRef} className="nex3-chat-history" role="log" aria-live="polite" aria-relevant="additions" data-lenis-prevent>
-            <div className="nex3-chat-messages">
-              {messages.map((message, index) => message.role === "assistant" && index === 0 ? (
-                <div key={`${message.role}-${index}`} className="nex3-chat-welcome">
-                  <span className="nex3-chat-welcome-icon"><MessageCircle aria-hidden="true" /></span>
-                  <div>
-                    <span className="nex3-chat-speaker">{mode === "post" ? "Inquiry Assistant" : "Nex3 Assistant"}</span>
-                    <p>{message.content}</p>
-                  </div>
-                </div>
-              ) : (
-                <div key={`${message.role}-${index}`}>
-                  <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
-                  {message.cta && (
-                    <a
-                      className="nex3-audit-cta"
-                      href={message.cta.href}
-                      aria-label={message.cta.label}
-                    >
-                      <span className="nex3-audit-cta-prompt" aria-hidden="true">&gt;_</span>
-                      <span className="nex3-audit-cta-label">{message.cta.label}</span>
-                      <span className="nex3-audit-cta-arrow" aria-hidden="true"><ArrowRight /></span>
-                    </a>
-                  )}
-                </div>
+          <nav className="nex3-chat-sidebar" aria-label="Assistant navigation">
+            <span className="nex3-chat-mark">
+              <Nex3Logo animate={false} color="#0B0B0C" className="nex3-chat-wordmark" />
+              <span>INC.</span>
+            </span>
+            <ul>
+              <li>
+                <button type="button" className="is-active" aria-current="page" onClick={openFaqWindow}>
+                  <MessageCircle aria-hidden="true" /><span>AI Assistant</span>
+                </button>
+              </li>
+              {SIDEBAR_LINKS.map(({ label, Icon, href, external }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { onClick: () => setOpen(false) })}
+                  >
+                    <Icon aria-hidden="true" /><span>{label}</span>
+                  </a>
+                </li>
               ))}
-              {loading && <div className="nex3-chat-message assistant nex3-chat-typing" aria-label="Assistant is typing"><i /><i /><i /></div>}
-              {error && <div className="nex3-chat-error" role="alert">{error}</div>}
+            </ul>
+            <div className="nex3-chat-sidebar-foot">
+              <p>AI for<br />Real Business Impact.</p>
+              <small>© {new Date().getFullYear()} Nex3 Inc.</small>
             </div>
-            {mode === "faq" && messages.length === 1 && (
-              <section className="nex3-chat-topics" aria-labelledby="nex3-topic-title">
-                <h3 id="nex3-topic-title">Popular topics</h3>
-                <div className="nex3-chat-topic-grid">
-                  {TOPICS.map(({ label, Icon }) => (
-                    <button type="button" key={label} onClick={() => sendMessage(label)} disabled={loading}>
-                      <Icon aria-hidden="true" /><span>{label}</span><ChevronRight aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
+          </nav>
+
+          <div className="nex3-chat-main">
+            <h2 id="nex3-chat-title" className="sr-only">{mode === "post" ? "Nex3 Inquiry Assistant" : "Nex3 AI Assistant"}</h2>
+            <button type="button" className="nex3-chat-close" onClick={() => setOpen(false)} aria-label="Close chat"><X /></button>
+            <div ref={historyRef} className="nex3-chat-history" role="log" aria-live="polite" aria-relevant="additions" data-lenis-prevent>
+              <div className="nex3-chat-messages">
+                {messages.map((message, index) => message.role === "assistant" && index === 0 ? (
+                  showHome ? null : (
+                    <div key={`${message.role}-${index}`} className="nex3-chat-welcome">
+                      <span className="nex3-chat-welcome-icon"><MessageCircle aria-hidden="true" /></span>
+                      <div>
+                        <span className="nex3-chat-speaker">{mode === "post" ? "Inquiry Assistant" : "Nex3 Assistant"}</span>
+                        <p>{message.content}</p>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div key={`${message.role}-${index}`}>
+                    <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
+                    {message.cta && (
+                      <a className="nex3-audit-cta" href={message.cta.href} aria-label={message.cta.label}>
+                        <span className="nex3-audit-cta-prompt" aria-hidden="true">&gt;_</span>
+                        <span className="nex3-audit-cta-label">{message.cta.label}</span>
+                        <span className="nex3-audit-cta-arrow" aria-hidden="true"><ArrowRight /></span>
+                      </a>
+                    )}
+                  </div>
+                ))}
+                {loading && <div className="nex3-chat-message assistant nex3-chat-typing" aria-label="Assistant is typing"><i /><i /><i /></div>}
+                {error && <div className="nex3-chat-error" role="alert">{error}</div>}
+              </div>
+              {showHome && (
+                <section className="nex3-chat-topics" aria-labelledby="nex3-topic-title">
+                  <h3 id="nex3-topic-title">Popular topics</h3>
+                  <div className="nex3-chat-topic-grid">
+                    {TOPICS.map(({ label, Icon }) => (
+                      <button type="button" key={label} onClick={() => sendMessage(label)} disabled={loading}>
+                        <Icon aria-hidden="true" /><span>{label}</span><ChevronRight aria-hidden="true" />
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+            <form className="nex3-chat-form" onSubmit={submit}>
+              <label htmlFor="nex3-chat-input" className="sr-only">{mode === "post" ? "Message the Nex3 inquiry assistant" : "Message the Nex3 AI assistant"}</label>
+              <input id="nex3-chat-input" ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} maxLength={MAX_MESSAGE_LENGTH} disabled={loading} placeholder={mode === "post" ? "Ask about your inquiry…" : "Ask a question..."} autoComplete="off" />
+              <button type="button" className="nex3-chat-attach" aria-label="File attachments are not available" title="File attachments are not available" disabled><Paperclip /></button>
+              <button type="submit" className="nex3-chat-send" disabled={loading || !input.trim()} aria-label="Send message"><Send /></button>
+            </form>
+            <p className="nex3-chat-privacy">Responses are trained on current Nex3 methodologies.</p>
           </div>
-          <form className="nex3-chat-form" onSubmit={submit}>
-            <label htmlFor="nex3-chat-input" className="sr-only">{mode === "post" ? "Message the Nex3 inquiry assistant" : "Message the Nex3 AI assistant"}</label>
-            <input id="nex3-chat-input" ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} maxLength={MAX_MESSAGE_LENGTH} disabled={loading} placeholder={mode === "post" ? "Ask about your inquiry…" : '"What AI solutions fit my business?" or "How do I start with AI agents?"'} autoComplete="off" />
-            <button type="button" className="nex3-chat-attach" aria-label="File attachments are not available" title="File attachments are not available" disabled><Paperclip /></button>
-            <button type="submit" disabled={loading || !input.trim()} aria-label="Send message"><Send /></button>
-          </form>
-          <p className="nex3-chat-privacy"><ShieldCheck aria-hidden="true" />Responses are trained on current Nex3 methodologies.</p>
         </motion.section>
+        </motion.div>
         )}
       </AnimatePresence>
       {!open && (

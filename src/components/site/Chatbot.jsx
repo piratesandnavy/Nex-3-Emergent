@@ -18,10 +18,10 @@ import {
 import Nex3Logo from "@/components/site/Nex3Logo";
 
 const API = `${process.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_API_URL || "https://nex-3-api.vercel.app"}/api/chat`;
-const FAQ_STORAGE_KEY = "nex3-faq-chat-v3";
+const FAQ_STORAGE_KEY = "nex3-faq-chat-v4";
 const POST_STORAGE_KEY = "nex3-post-chat-v2";
 const SUBMISSION_STORAGE_KEY = "nex3-submission-v2";
-const FAQ_GREETING = "Hi! I’m here to answer questions about Nex3’s services, workshops, capabilities, and how we work.";
+const FAQ_GREETING = "Get answers on AI strategy, implementation, and ROI for your organization";
 const MAX_MESSAGE_LENGTH = 1200;
 const TOPICS = [
   {

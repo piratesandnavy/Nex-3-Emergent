@@ -1,4 +1,12 @@
 import { motion } from "framer-motion";
+import AuditButton from "@/components/ui/AuditButton";
+
+const scrollTo = (id) => {
+  const el = document.querySelector(id);
+  if (!el) return;
+  if (window.__lenis) window.__lenis.scrollTo(el, { offset: 0 });
+  else el.scrollIntoView({ behavior: "smooth" });
+};
 
 const CHAPTERS = [
   {
@@ -68,6 +76,16 @@ export default function Manifesto() {
             </p>
           </motion.div>
         ))}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="flex items-center justify-center py-24 relative z-10 border-t border-b border-[var(--line)]"
+        >
+          <AuditButton onClick={() => scrollTo("#contact")} />
+        </motion.div>
       </div>
     </section>
   );

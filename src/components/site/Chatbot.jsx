@@ -26,11 +26,35 @@ const POST_STORAGE_KEY = "nex3-post-chat-v2";
 const SUBMISSION_STORAGE_KEY = "nex3-submission-v2";
 const FAQ_GREETING = "Get answers on AI strategy, implementation, and ROI for your organization";
 const MAX_MESSAGE_LENGTH = 1200;
-const SIDEBAR_LINKS = [
-  { label: "Services", Icon: LayoutGrid, href: "/#approach" },
-  { label: "Resources", Icon: FileText, href: "/audit" },
-  { label: "Book a Call", Icon: CalendarDays, href: "https://cal.com/purmehdi/30min", external: true },
-  { label: "Help", Icon: CircleHelp, href: "/#contact" },
+const SIDEBAR_ITEMS = [
+  {
+    label: "Services",
+    Icon: LayoutGrid,
+    answer:
+      "Nex3 helps leaders plan, build, and hire for the AI economy:\n\n01 · Plan — Clarity before capital. We pressure-test your thesis, map the real market, and turn ambition into a decision you can defend, in days rather than quarters.\n\n02 · Build — Ship the right thing. From architecture and AI agent design to go-to-market, we sit inside the work to help you build a product and company that hold up in the real world.\n\n03 · Hire — The team that compounds. We help you find and close the operators, engineers, and leaders who move the needle, and design the org so every next hire is easier.\n\nAsk me about any of these, or book a call to discuss your goals.",
+    cta: { label: "Explore our approach", href: "/#approach" },
+  },
+  {
+    label: "Resources",
+    Icon: FileText,
+    answer:
+      "Here are free Nex3 resources to get started:\n\n• Free AI Budget Audit — map your AI tools and subscriptions, spot duplicated or underused spend, and receive a personalized bill summary by email.\n• The Ultimate Guide to Free AI — a practical guide to high-value AI tools you can use at no cost, sent alongside your audit results.\n\nYou can also ask me about AI agents, costs, timelines, or implementation right here.",
+    cta: { label: "Get your free AI audit", href: "/audit" },
+  },
+  {
+    label: "Book a Call",
+    Icon: CalendarDays,
+    answer:
+      "Ready to build smarter? Book a free 30-minute discovery call with the Nex3 team. We'll discuss your goals, current AI maturity, and where AI can create the most impact—whether you're starting with a workshop or ready for full agent deployment.\n\nPick a time that works for you using the link below.",
+    cta: { label: "Book a 30-min call", href: "https://cal.com/purmehdi/30min", external: true },
+  },
+  {
+    label: "Help",
+    Icon: CircleHelp,
+    answer:
+      "Happy to help. Here's how to get the most out of this assistant:\n\n• Type any question about AI strategy, implementation, costs, or timelines in the box below.\n• Use Services, Resources, or Book a Call in the sidebar for quick answers.\n• Click AI Assistant to return to the popular topics.\n\nNeed a person? Send us a message through the contact form and the team will reply within 1–2 business days.",
+    cta: { label: "Contact the team", href: "/#contact" },
+  },
 ];
 const TOPICS = [
   {
@@ -110,6 +134,7 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [activeNav, setActiveNav] = useState("assistant");
   const panel = useRef(null);
   const inputRef = useRef(null);
   const historyRef = useRef(null);
@@ -175,6 +200,19 @@ export default function Chatbot() {
 
   useEffect(() => () => requestRef.current?.abort(), []);
 
+  const showCanned = (item) => {
+    if (loading) return;
+    requestRef.current?.abort();
+    setError("");
+    setActiveNav(item.label);
+    setMessages((current) => [...current, { role: "user", content: item.label }]);
+    setLoading(true);
+    window.setTimeout(() => {
+      setMessages((current) => [...current, { role: "assistant", content: item.answer, cta: item.cta || null }]);
+      setLoading(false);
+    }, 550);
+  };
+
   const sendMessage = async (value) => {
     const text = value.trim();
     if (!text || loading) return;
@@ -227,7 +265,15 @@ export default function Chatbot() {
     setMode("faq");
     setMessages(loadStored(FAQ_STORAGE_KEY, [{ role: "assistant", content: FAQ_GREETING }]));
     setError("");
+    setActiveNav("assistant");
     setOpen(true);
+  };
+
+  const showAssistantHome = () => {
+    if (loading) return;
+    setActiveNav("assistant");
+    setError("");
+    if (mode === "faq") setMessages([{ role: "assistant", content: FAQ_GREETING }]);
   };
 
   const showHome = mode === "faq" && messages.length === 1;
@@ -264,18 +310,26 @@ export default function Chatbot() {
             </span>
             <ul>
               <li>
-                <button type="button" className="is-active" aria-current="page" onClick={openFaqWindow}>
+                <button
+                  type="button"
+                  className={activeNav === "assistant" ? "is-active" : undefined}
+                  aria-current={activeNav === "assistant" ? "page" : undefined}
+                  onClick={showAssistantHome}
+                >
                   <MessageCircle aria-hidden="true" /><span>AI Assistant</span>
                 </button>
               </li>
-              {SIDEBAR_LINKS.map(({ label, Icon, href, external }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { onClick: () => setOpen(false) })}
+              {SIDEBAR_ITEMS.map((item) => (
+                <li key={item.label}>
+                  <button
+                    type="button"
+                    className={activeNav === item.label ? "is-active" : undefined}
+                    aria-current={activeNav === item.label ? "page" : undefined}
+                    onClick={() => showCanned(item)}
+                    disabled={loading}
                   >
-                    <Icon aria-hidden="true" /><span>{label}</span>
-                  </a>
+                    <item.Icon aria-hidden="true" /><span>{item.label}</span>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -304,7 +358,14 @@ export default function Chatbot() {
                   <div key={`${message.role}-${index}`}>
                     <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
                     {message.cta && (
-                      <a className="nex3-audit-cta" href={message.cta.href} aria-label={message.cta.label}>
+                      <a
+                        className="nex3-audit-cta"
+                        href={message.cta.href}
+                        aria-label={message.cta.label}
+                        {...(message.cta.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : message.cta.href.startsWith("/#") ? { onClick: () => setOpen(false) } : {})}
+                      >
                         <span className="nex3-audit-cta-prompt" aria-hidden="true">&gt;_</span>
                         <span className="nex3-audit-cta-label">{message.cta.label}</span>
                         <span className="nex3-audit-cta-arrow" aria-hidden="true"><ArrowRight /></span>

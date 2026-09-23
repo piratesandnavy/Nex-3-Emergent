@@ -55,11 +55,11 @@ const INTERNS = [
     linkedin: "https://www.linkedin.com/in/siddharthmspm",
   },
   {
-    name: "Afrah Ameen",
-    role: "Social Media Specialist Intern",
-    bio: "Builds engaging online communities and crafts compelling content strategies, managing campaigns and social presence across platforms.",
-    image: "/images/team/afrah-ameen.jpg",
-    linkedin: "https://www.linkedin.com/in/afrah-ameen/",
+    name: "Sagir Mahbub",
+    role: "Operations & Project Management Intern",
+    bio: "MBA and PMP-certified operations professional focused on streamlining delivery, coordinating cross-functional projects, and turning strategy into measurable results.",
+    image: "/images/team/sagir-mahbub.jpg",
+    linkedin: "https://www.linkedin.com/in/sagir-mahbub/",
   },
   {
     name: "Dayakar Rayapureddy",

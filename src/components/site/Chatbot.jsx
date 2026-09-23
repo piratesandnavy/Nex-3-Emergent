@@ -39,21 +39,21 @@ const SIDEBAR_ITEMS = [
     Icon: FileText,
     answer:
       "Here are free Nex3 resources to get started:\n\n• Free AI Budget Audit — map your AI tools and subscriptions, spot duplicated or underused spend, and receive a personalized bill summary by email.\n• The Ultimate Guide to Free AI — a practical guide to high-value AI tools you can use at no cost, sent alongside your audit results.\n\nYou can also ask me about AI agents, costs, timelines, or implementation right here.",
-    cta: { label: "Get your free AI audit", href: "/audit" },
+    cta: { label: "Explore resources", href: "/audit" },
   },
   {
     label: "Book a Call",
     Icon: CalendarDays,
     answer:
       "Ready to build smarter? Book a free 30-minute discovery call with the Nex3 team. We'll discuss your goals, current AI maturity, and where AI can create the most impact—whether you're starting with a workshop or ready for full agent deployment.\n\nPick a time that works for you using the link below.",
-    cta: { label: "Book a 30-min call", href: "https://cal.com/purmehdi/30min", external: true },
+    cta: { label: "Book a call", href: "https://cal.com/purmehdi/30min", external: true },
   },
   {
     label: "Help",
     Icon: CircleHelp,
     answer:
       "Happy to help. Here's how to get the most out of this assistant:\n\n• Type any question about AI strategy, implementation, costs, or timelines in the box below.\n• Use Services, Resources, or Book a Call in the sidebar for quick answers.\n• Click AI Assistant to return to the popular topics.\n\nNeed a person? Send us a message through the contact form and the team will reply within 1–2 business days.",
-    cta: { label: "Contact the team", href: "/#contact" },
+    cta: { label: "Get help", href: "/#contact" },
   },
 ];
 const TOPICS = [
@@ -355,20 +355,19 @@ export default function Chatbot() {
                     </div>
                   )
                 ) : (
-                  <div key={`${message.role}-${index}`}>
+                  <div key={`${message.role}-${index}`} className={message.cta ? "nex3-chat-reply" : undefined}>
                     <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
                     {message.cta && (
                       <a
-                        className="nex3-audit-cta"
+                        className="nex3-chat-cta"
                         href={message.cta.href}
                         aria-label={message.cta.label}
                         {...(message.cta.external
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : message.cta.href.startsWith("/#") ? { onClick: () => setOpen(false) } : {})}
                       >
-                        <span className="nex3-audit-cta-prompt" aria-hidden="true">&gt;_</span>
-                        <span className="nex3-audit-cta-label">{message.cta.label}</span>
-                        <span className="nex3-audit-cta-arrow" aria-hidden="true"><ArrowRight /></span>
+                        <span>{message.cta.label}</span>
+                        <ArrowRight aria-hidden="true" />
                       </a>
                     )}
                   </div>

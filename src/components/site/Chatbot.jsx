@@ -117,6 +117,9 @@ function confirmationMessage({ name = "", company = "" }) {
   return `${thanks}\n\nI’ve received ${subject}. We’ll review what you’re working on and get back to you within 1–2 business days.\n\nIn the meantime, feel free to ask me anything about our services, workshops, or how we typically work with clients.`;
 }
 
+const canAutoFocus = () =>
+  typeof window !== "undefined" && window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
+
 export default function Chatbot() {
   const initial = useRef(null);
   if (!initial.current) {
@@ -166,7 +169,8 @@ export default function Chatbot() {
 
   useEffect(() => {
     if (!open) return;
-    inputRef.current?.focus();
+    // Only auto-focus on desktop; on touch devices this would pop up the keyboard.
+    if (canAutoFocus()) inputRef.current?.focus();
     const handleKey = (event) => {
       if (event.key === "Escape") setOpen(false);
       if (event.key !== "Tab" || !panel.current) return;
@@ -258,6 +262,8 @@ export default function Chatbot() {
 
   const submit = (event) => {
     event.preventDefault();
+    // Dismiss the on-screen keyboard after sending so the reply is visible.
+    if (!canAutoFocus()) inputRef.current?.blur();
     sendMessage(input);
   };
 

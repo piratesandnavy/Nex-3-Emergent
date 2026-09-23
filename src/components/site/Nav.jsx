@@ -87,11 +87,11 @@ export default function Nav() {
             Team
           </button>
           <button
-            data-testid="nav-link-testimonials"
-            onClick={() => goRoute("/testimonials")}
+            data-testid="nav-link-audit"
+            onClick={() => goRoute("/audit")}
             className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
           >
-            Testimonials
+            Free AI Audit
           </button>
         </nav>
 
@@ -146,10 +146,10 @@ export default function Nav() {
                 Team
               </button>
               <button
-                onClick={() => mobileAction(() => goRoute("/testimonials"))}
+                onClick={() => mobileAction(() => goRoute("/audit"))}
                 className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
               >
-                Testimonials
+                Free AI Audit
               </button>
               <button
                 onClick={() => mobileAction(goContact)}

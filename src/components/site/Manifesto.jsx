@@ -1,12 +1,6 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import AuditButton from "@/components/ui/AuditButton";
-
-const scrollTo = (id) => {
-  const el = document.querySelector(id);
-  if (!el) return;
-  if (window.__lenis) window.__lenis.scrollTo(el, { offset: 0 });
-  else el.scrollIntoView({ behavior: "smooth" });
-};
 
 const CHAPTERS = [
   {
@@ -30,6 +24,7 @@ const CHAPTERS = [
 ];
 
 export default function Manifesto() {
+  const navigate = useNavigate();
   return (
     <section
       id="approach"
@@ -84,7 +79,7 @@ export default function Manifesto() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="flex items-center justify-center py-0 relative z-10 border-t border-[var(--line)]"
         >
-          <AuditButton onClick={() => scrollTo("#contact")} />
+          <AuditButton onClick={() => navigate("/audit")} />
         </motion.div>
       </div>
     </section>

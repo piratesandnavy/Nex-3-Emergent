@@ -288,7 +288,7 @@ export default function Chatbot() {
           </div>
           <form className="nex3-chat-form" onSubmit={submit}>
             <label htmlFor="nex3-chat-input" className="sr-only">{mode === "post" ? "Message the Nex3 inquiry assistant" : "Message the Nex3 AI assistant"}</label>
-            <input id="nex3-chat-input" ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} maxLength={MAX_MESSAGE_LENGTH} disabled={loading} placeholder={mode === "post" ? "Ask about your inquiry…" : "Ask a question…"} autoComplete="off" />
+            <input id="nex3-chat-input" ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} maxLength={MAX_MESSAGE_LENGTH} disabled={loading} placeholder={mode === "post" ? "Ask about your inquiry…" : '"What AI solutions fit my business?" or "How do I start with AI agents?"'} autoComplete="off" />
             <button type="button" className="nex3-chat-attach" aria-label="File attachments are not available" title="File attachments are not available" disabled><Paperclip /></button>
             <button type="submit" disabled={loading || !input.trim()} aria-label="Send message"><Send /></button>
           </form>

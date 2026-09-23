@@ -58,7 +58,7 @@ const INTERNS = [
     name: "Afrah Ameen",
     role: "Social Media Specialist Intern",
     bio: "Builds engaging online communities and crafts compelling content strategies, managing campaigns and social presence across platforms.",
-    image: "/images/team/afrah-ameen.png",
+    image: "/images/team/afrah-ameen.jpg",
     linkedin: "https://www.linkedin.com/in/afrah-ameen/",
   },
   {

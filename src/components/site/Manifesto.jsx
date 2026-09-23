@@ -60,14 +60,14 @@ export default function Manifesto() {
             className="group grid grid-cols-1 gap-6 py-12 md:grid-cols-12 md:items-start"
             data-testid={`chapter-${c.n}`}
           >
-            <div className="font-display col-span-2 text-5xl text-[var(--muted)] transition-colors duration-500 group-hover:text-[var(--acid)] sm:text-6xl">
+            <div className="font-display col-span-2 text-5xl text-[var(--muted)] transition-colors duration-500 group-hover:text-[var(--acid)] group-active:text-[var(--acid)] sm:text-6xl">
               {c.n}
             </div>
             <div className="col-span-4">
               <h3 className="font-display text-3xl tracking-tight sm:text-4xl">
                 {c.title}
               </h3>
-              <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)] transition-colors duration-500 group-hover:text-[var(--acid)] group-active:text-[var(--acid)]">
                 {c.lead}
               </p>
             </div>

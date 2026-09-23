@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
 const STATS = [
-  { k: "120+", v: "Founders & operators advised" },
-  { k: "$300M+", v: "Raised & deployed alongside" },
+  { k: "90+", v: "Founders & operators advised" },
+  { k: "$6M+", v: "Raised & deployed alongside" },
   { k: "3", v: "Continents, one operating model" },
   { k: "0", v: "Jargon. Hype. Filler decks." },
 ];

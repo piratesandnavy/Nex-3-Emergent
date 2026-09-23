@@ -56,8 +56,8 @@ const INTERNS = [
   },
   {
     name: "Sagir Mahbub",
-    role: "Operations & Project Management Intern",
-    bio: "MBA and PMP-certified operations professional focused on streamlining delivery, coordinating cross-functional projects, and turning strategy into measurable results.",
+    role: "AI Innovation Intern",
+    bio: "Works on developing AI-powered products that solve real-world challenges.",
     image: "/images/team/sagir-mahbub.jpg",
     linkedin: "https://www.linkedin.com/in/sagir-mahbub/",
   },

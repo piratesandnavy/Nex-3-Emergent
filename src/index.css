@@ -157,7 +157,12 @@ code { font-family: 'Azeret Mono', monospace; }
 .nex3-chat-form .nex3-chat-send:disabled { opacity: .85; cursor: not-allowed; }
 .nex3-chat-form svg { width: 1.45rem; height: 1.45rem; }
 .nex3-chat-privacy { padding: .9rem 2.75rem 1.5rem 3.25rem; color: var(--c-muted); font-size: .95rem; }
-.nex3-chat-panel .nex3-audit-cta { background: var(--c-ink); }
+.nex3-chat-reply { width: fit-content; max-width: 80%; margin-bottom: 1rem; }
+.nex3-chat-reply .nex3-chat-message { max-width: 100%; margin-bottom: .75rem; }
+.nex3-chat-cta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 3.5rem; padding: .9rem 1.4rem; border-radius: .9rem; background: var(--c-ink); color: #fff; font-size: 1.05rem; font-weight: 500; text-decoration: none; animation: nex3-message-in .16s ease-out; transition: background .18s ease, transform .18s ease; }
+.nex3-chat-cta:hover { background: #2a2a2d; }
+.nex3-chat-cta svg { flex-shrink: 0; width: 1.35rem; height: 1.35rem; transition: transform .18s ease; }
+.nex3-chat-cta:hover svg { transform: translateX(3px); }
 .nex3-chat button:focus-visible, .nex3-chat a:focus-visible { outline: 2px solid #0B0B0C; outline-offset: 2px; }
 @media (max-width: 1100px) {
   .nex3-chat-panel { grid-template-columns: 15rem minmax(0,1fr); }
@@ -176,6 +181,8 @@ code { font-family: 'Azeret Mono', monospace; }
   .nex3-chat-topic-grid button { grid-template-columns: 2rem minmax(0,1fr) auto; gap: .85rem; min-height: 4.25rem; padding: .85rem 1rem; font-size: .95rem; }
   .nex3-chat-topic-grid button > svg:first-child { width: 1.5rem; height: 1.5rem; }
   .nex3-chat-message { max-width: 90%; font-size: .95rem; }
+  .nex3-chat-reply { max-width: 90%; }
+  .nex3-chat-cta { min-height: 3.1rem; padding: .8rem 1.1rem; font-size: .95rem; }
   .nex3-chat-form { grid-template-columns: minmax(0,1fr) 3rem 3rem; margin: 0 1rem; padding: .4rem; gap: .4rem; }
   .nex3-chat-form input { height: 3rem; font-size: 1rem; padding: 0 .9rem; }
   .nex3-chat-form button { width: 3rem; height: 3rem; }
@@ -187,7 +194,7 @@ code { font-family: 'Azeret Mono', monospace; }
 }
 @keyframes nex3-message-in { from { opacity: 0; transform: translateY(.35rem); } }
 @keyframes nex3-dot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-.15rem); } }
-@media (prefers-reduced-motion: reduce) { .nex3-chat-message, .nex3-chat-typing i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .nex3-chat-message, .nex3-chat-cta, .nex3-chat-typing i { animation: none; } .nex3-chat-cta svg { transition: none; } }
 
 @layer base {
   :root {

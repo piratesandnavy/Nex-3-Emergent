@@ -292,7 +292,7 @@ export default function Chatbot() {
             <button type="button" className="nex3-chat-attach" aria-label="File attachments are not available" title="File attachments are not available" disabled><Paperclip /></button>
             <button type="submit" disabled={loading || !input.trim()} aria-label="Send message"><Send /></button>
           </form>
-          <p className="nex3-chat-privacy"><ShieldCheck aria-hidden="true" />AI responses may be imperfect. Don’t enter confidential or sensitive business information.</p>
+          <p className="nex3-chat-privacy"><ShieldCheck aria-hidden="true" />Responses are trained on current Nex3 methodologies.</p>
         </motion.section>
         )}
       </AnimatePresence>

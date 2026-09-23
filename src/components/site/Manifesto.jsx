@@ -34,7 +34,7 @@ export default function Manifesto() {
     <section
       id="approach"
       data-testid="manifesto"
-      className="mx-auto max-w-[1400px] px-5 py-24 sm:px-10 sm:py-32"
+      className="mx-auto max-w-[1400px] px-5 pt-24 pb-0 sm:px-10 sm:pt-32 sm:pb-0"
     >
       <div className="mb-16 max-w-2xl">
         <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--acid)]">
@@ -82,7 +82,7 @@ export default function Manifesto() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="flex items-center justify-center py-24 relative z-10 border-t border-b border-[var(--line)]"
+          className="flex items-center justify-center py-12 relative z-10 border-t border-[var(--line)]"
         >
           <AuditButton onClick={() => scrollTo("#contact")} />
         </motion.div>

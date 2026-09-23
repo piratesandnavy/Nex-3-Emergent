@@ -82,7 +82,7 @@ export default function Manifesto() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="flex items-center justify-center py-12 relative z-10 border-t border-[var(--line)]"
+          className="flex items-center justify-center py-0 relative z-10 border-t border-[var(--line)]"
         >
           <AuditButton onClick={() => scrollTo("#contact")} />
         </motion.div>

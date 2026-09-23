@@ -13,6 +13,36 @@ const STATS = [
 
 const ALUMNI = [
   {
+    name: "Afrah Ameen",
+    cohort: "Springboard '26 Alum",
+    former: "Former Social Media Specialist Intern at Nex3",
+    nowRole: "Marketing & Growth Professional",
+    nowDetail:
+      "Building a career in Canada with hands-on AI-enabled marketing experience",
+    image: "/images/team/afrah-ameen.jpg",
+    linkedin: "https://www.linkedin.com/in/afrah-ameen/",
+    quote:
+      "Consistent, systematic execution beats chasing isolated viral moments.",
+    journey:
+      "Afrah joined Nex3 as an MBA candidate at NYIT Vancouver with a real-world mandate: transform a near-dormant X account into a growing, monetizable audience. She started by managing daily content and left as a data-driven growth operator who could test strategies, interpret results, and identify what actually moves an audience.",
+    built: [
+      "AI-powered engagement engine: 5,000+ automated replies and 4,800+ reactions to expand reach and audience exposure",
+      "Content strategy: repositioned the account as a marketing-insights brand with five content pillars, a three-tier subscription model, and a 90-day growth plan",
+      "Growth playbook: documented tested tactics, insights, and repeatable processes for the next intern",
+    ],
+    learned: [
+      "Treat social growth as an experiment: measure inputs, analyze outcomes, and double down on what works",
+      "Combine AI automation with human judgment to scale execution without sacrificing original content",
+      "Communicate growth effectively by showing what worked, what didn't, and why",
+    ],
+    impact: [
+      "1.54M monthly impressions, up from fewer than 1,500 — an increase of more than 1,000×",
+      "2.15M total impressions and approximately 1,400 new followers",
+      "Established a key Nex3 growth principle: consistent, systematic execution beats chasing isolated viral moments",
+    ],
+    tags: ["AI-Enabled Marketing", "Growth Experimentation", "Social Analytics"],
+  },
+  {
     name: "Sepideh Sadeghi",
     cohort: "Springboard '25 Alum",
     former: "Former BI Intern at Nex3",
@@ -41,36 +71,6 @@ const ALUMNI = [
       "Graduated her MBA and stepped into the Canadian tech market with a portfolio she built here",
     ],
     tags: ["Business Intelligence", "Dashboard Development", "Data Storytelling"],
-  },
-  {
-    name: "Afrah Ameen",
-    cohort: "Springboard '25 Alum",
-    former: "Former Social Media Specialist Intern at Nex3",
-    nowRole: "Marketing & Growth Professional",
-    nowDetail:
-      "Building a career in Canada with hands-on AI-enabled marketing experience",
-    image: "/images/team/afrah-ameen.jpg",
-    linkedin: "https://www.linkedin.com/in/afrah-ameen/",
-    quote:
-      "Consistent, systematic execution beats chasing isolated viral moments.",
-    journey:
-      "Afrah joined Nex3 as an MBA candidate at NYIT Vancouver with a real-world mandate: transform a near-dormant X account into a growing, monetizable audience. She started by managing daily content and left as a data-driven growth operator who could test strategies, interpret results, and identify what actually moves an audience.",
-    built: [
-      "AI-powered engagement engine: 5,000+ automated replies and 4,800+ reactions to expand reach and audience exposure",
-      "Content strategy: repositioned the account as a marketing-insights brand with five content pillars, a three-tier subscription model, and a 90-day growth plan",
-      "Growth playbook: documented tested tactics, insights, and repeatable processes for the next intern",
-    ],
-    learned: [
-      "Treat social growth as an experiment: measure inputs, analyze outcomes, and double down on what works",
-      "Combine AI automation with human judgment to scale execution without sacrificing original content",
-      "Communicate growth effectively by showing what worked, what didn't, and why",
-    ],
-    impact: [
-      "1.54M monthly impressions, up from fewer than 1,500 — an increase of more than 1,000×",
-      "2.15M total impressions and approximately 1,400 new followers",
-      "Established a key Nex3 growth principle: consistent, systematic execution beats chasing isolated viral moments",
-    ],
-    tags: ["AI-Enabled Marketing", "Growth Experimentation", "Social Analytics"],
   },
   {
     name: "Hamed Aghaei",

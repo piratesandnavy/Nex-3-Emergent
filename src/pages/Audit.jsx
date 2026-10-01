@@ -40,7 +40,21 @@ const TOOLS = [
   { id: "notion", name: "Notion AI", Icon: SiNotion, price: 10, bg: "#D8D2C4", fg: "#1B1B1E" },
   { id: "elevenlabs", name: "ElevenLabs", Icon: SiElevenlabs, price: 22, bg: "#3A3A3A", fg: "#E7E7E7" },
   { id: "runway", name: "Runway", Icon: Clapperboard, price: 15, bg: "#4FE0B0", fg: "#08261C" },
+  { id: "gamma", name: "Gamma", logo: "/images/ai-tools/gamma.svg", price: 10, bg: "#D9F1FF", fg: "#002253" },
+  { id: "replit", name: "Replit", logo: "/images/ai-tools/replit.png", price: 20, bg: "#F4E8DE", fg: "#F26207" },
+  { id: "grok", name: "Grok", logo: "/images/ai-tools/grok.svg", price: 30, bg: "#191919", fg: "#FCFCFC" },
+  { id: "heygen", name: "HeyGen", logo: "/images/ai-tools/heygen.png", price: 29, bg: "#E7E7FF", fg: "#11111A" },
+  { id: "otter", name: "Otter.ai", logo: "/images/ai-tools/otter.png", price: 17, bg: "#F4F7FF", fg: "#0866FF" },
 ];
+
+function ToolLogo({ tool, className }) {
+  if (tool.logo) {
+    return <img src={tool.logo} alt="" aria-hidden="true" className={`${className} object-contain`} />;
+  }
+
+  const Icon = tool.Icon;
+  return <Icon className={className} style={{ color: tool.fg }} />;
+}
 
 const COST_STEP = 20;
 
@@ -446,7 +460,6 @@ export default function Audit() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {TOOLS.map((t) => {
             const isSel = selected.includes(t.id);
-            const Icon = t.Icon;
             return (
               <button
                 key={t.id}
@@ -471,7 +484,7 @@ export default function Audit() {
                   className="flex h-14 w-14 items-center justify-center rounded-xl"
                   style={{ backgroundColor: t.bg, color: t.fg }}
                 >
-                  <Icon className="h-6 w-6" style={{ color: t.fg }} />
+                  <ToolLogo tool={t} className="h-8 w-8" />
                 </span>
                 <span className="text-sm text-[var(--paper)]">{t.name}</span>
               </button>
@@ -595,7 +608,6 @@ export default function Audit() {
                 </div>
                 <div className="mt-6 space-y-4 border-t border-dashed border-[var(--line)] pt-6">
                   {picked.map((t) => {
-                    const Icon = t.Icon;
                     const cost = toolCosts[t.id];
                     return (
                       <div key={t.id} className="flex items-center justify-between gap-3 text-sm">
@@ -604,7 +616,7 @@ export default function Audit() {
                             className="flex h-7 w-7 items-center justify-center rounded-md"
                             style={{ backgroundColor: t.bg, color: t.fg }}
                           >
-                            <Icon className="h-3.5 w-3.5" style={{ color: t.fg }} />
+                            <ToolLogo tool={t} className="h-4 w-4" />
                           </span>
                           {t.name}
                         </span>

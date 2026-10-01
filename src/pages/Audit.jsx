@@ -20,6 +20,11 @@ import {
   SiPerplexity,
   SiNotion,
   SiElevenlabs,
+  SiDeepseek,
+  SiMistralai,
+  SiHuggingface,
+  SiFigma,
+  SiCursor,
 } from "react-icons/si";
 import axios from "axios";
 import { toast } from "sonner";
@@ -45,6 +50,14 @@ const TOOLS = [
   { id: "grok", name: "Grok", logo: "/images/ai-tools/grok.svg", price: 30, bg: "#191919", fg: "#FCFCFC" },
   { id: "heygen", name: "HeyGen", logo: "/images/ai-tools/heygen.png", price: 29, bg: "#E7E7FF", fg: "#11111A" },
   { id: "otter", name: "Otter.ai", logo: "/images/ai-tools/otter.png", price: 17, bg: "#F4F7FF", fg: "#0866FF" },
+  { id: "deepseek", name: "DeepSeek", Icon: SiDeepseek, price: 0, bg: "#1E293B", fg: "#06B6D4" },
+  { id: "mistral", name: "Mistral AI", Icon: SiMistralai, price: 0, bg: "#1E1E1E", fg: "#F5F5F5" },
+  { id: "copilot-pro", name: "Microsoft Copilot", logo: "/images/ai-tools/microsoft-copilot.svg", price: 20, bg: "#0078D4", fg: "#FFFFFF" },
+  { id: "adobe-firefly", name: "Adobe Firefly", logo: "/images/ai-tools/adobe-firefly.svg", price: 20, bg: "#147EA9", fg: "#FFFFFF" },
+  { id: "huggingface", name: "Hugging Face", Icon: SiHuggingface, price: 9, bg: "#FFD166", fg: "#000000" },
+  { id: "figma", name: "Figma", Icon: SiFigma, price: 12, bg: "#F24E1E", fg: "#FFFFFF" },
+  { id: "cursor", name: "Cursor", Icon: SiCursor, price: 20, bg: "#000000", fg: "#FFFFFF" },
+  { id: "slack-ai", name: "Slack", logo: "/images/ai-tools/slack.svg", price: 6.67, bg: "#4A154B", fg: "#FFFFFF" },
 ];
 
 function ToolLogo({ tool, className }) {

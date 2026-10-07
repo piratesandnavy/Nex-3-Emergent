@@ -322,7 +322,7 @@ export default function Chatbot() {
                   aria-current={activeNav === "assistant" ? "page" : undefined}
                   onClick={showAssistantHome}
                 >
-                  <MessageCircle aria-hidden="true" /><span>AI Assistant</span>
+                  <MessageCircle aria-hidden="true" /><span>New Chat</span>
                 </button>
               </li>
               {SIDEBAR_ITEMS.map((item) => (

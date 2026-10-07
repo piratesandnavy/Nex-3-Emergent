@@ -32,6 +32,7 @@ const BOOKING_URL = "https://cal.com/purmehdi/30min";
 // Replies where the assistant could not answer, or handed the visitor to the team.
 const NEEDS_HUMAN = /nex3info@gmail\.com|proper conversation with the nex3 team|\b(i|we) (do not|don[’']t) (have|know)\b|\bnot sure\b|\b(cannot|can[’']t|unable to) (answer|help|provide|confirm|share)\b|\b(speak|talk) (with|to) (the|a|our) (nex3 )?(team|person|human)\b/i;
 const needsHuman = (text) => NEEDS_HUMAN.test(text);
+const UNANSWERED_MESSAGE = "I wasn't able to answer that one. You can escalate to a human on the Nex3 team below.";
 const SIDEBAR_ITEMS = [
   {
     label: "Services",
@@ -125,8 +126,8 @@ function confirmationMessage({ name = "", company = "" }) {
 
 function Escalation({ onNavigate }) {
   return (
-    <div className="nex3-chat-escalate" role="group" aria-label="Talk to a person at Nex3">
-      <p><UserRound aria-hidden="true" /><span>Want to talk to a person?</span></p>
+    <div className="nex3-chat-escalate" role="group" aria-label="Escalate to a human at Nex3">
+      <p><UserRound aria-hidden="true" /><span>Escalate to human</span></p>
       <div className="nex3-chat-escalate-actions">
         <a href="/#contact" onClick={onNavigate}>Message the team</a>
         <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Book a call</a>
@@ -272,7 +273,7 @@ export default function Chatbot() {
       if (!response.ok || typeof body.reply !== "string") throw new Error(body.error || "Assistant unavailable");
       setMessages((current) => [...current, { role: "assistant", content: body.reply, escalate: needsHuman(body.reply) }]);
     } catch (requestError) {
-      if (requestError.name !== "AbortError") setError(requestError.message || "The assistant is temporarily unavailable. Please try again.");
+      if (requestError.name !== "AbortError") setMessages((current) => [...current, { role: "assistant", content: UNANSWERED_MESSAGE, escalate: true }]);
     } finally {
       if (requestRef.current === controller) requestRef.current = null;
       setLoading(false);
@@ -400,7 +401,6 @@ export default function Chatbot() {
                 ))}
                 {loading && <div className="nex3-chat-message assistant nex3-chat-typing" aria-label="Assistant is typing"><i /><i /><i /></div>}
                 {error && <div className="nex3-chat-error" role="alert">{error}</div>}
-                {error && <Escalation onNavigate={() => setOpen(false)} />}
               </div>
               {showHome && (
                 <section className="nex3-chat-topics" aria-labelledby="nex3-topic-title">

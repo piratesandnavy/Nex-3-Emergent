@@ -163,6 +163,15 @@ code { font-family: 'Azeret Mono', monospace; }
 .nex3-chat-cta:hover { background: #2a2a2d; }
 .nex3-chat-cta svg { flex-shrink: 0; width: 1.35rem; height: 1.35rem; transition: transform .18s ease; }
 .nex3-chat-cta:hover svg { transform: translateX(3px); }
+.nex3-chat-escalate { width: fit-content; max-width: 100%; margin-bottom: 1rem; padding: .9rem 1.05rem; border: 1px solid var(--c-line); border-radius: .9rem; background: #f7f7f8; animation: nex3-message-in .16s ease-out; }
+.nex3-chat-reply .nex3-chat-escalate { margin-bottom: 0; }
+.nex3-chat-escalate p { display: flex; align-items: center; gap: .5rem; margin-bottom: .7rem; color: var(--c-text); font-size: .95rem; font-weight: 500; }
+.nex3-chat-escalate p svg { flex-shrink: 0; width: 1.1rem; height: 1.1rem; }
+.nex3-chat-escalate-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.nex3-chat-escalate-actions a { display: inline-flex; align-items: center; min-height: 2.5rem; padding: .5rem .95rem; border: 1px solid var(--c-line); border-radius: .65rem; background: #fff; color: var(--c-text); font-size: .92rem; font-weight: 500; text-decoration: none; transition: background .18s ease, border-color .18s ease; }
+.nex3-chat-escalate-actions a:hover { border-color: #b8b8bd; }
+.nex3-chat-escalate-actions a:first-child { border-color: var(--c-ink); background: var(--c-ink); color: #fff; }
+.nex3-chat-escalate-actions a:first-child:hover { background: #2a2a2d; }
 .nex3-chat button:focus-visible, .nex3-chat a:focus-visible { outline: 2px solid #0B0B0C; outline-offset: 2px; }
 @media (max-width: 1100px) {
   .nex3-chat-panel { grid-template-columns: 15rem minmax(0,1fr); }
@@ -194,7 +203,7 @@ code { font-family: 'Azeret Mono', monospace; }
 }
 @keyframes nex3-message-in { from { opacity: 0; transform: translateY(.35rem); } }
 @keyframes nex3-dot { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-.15rem); } }
-@media (prefers-reduced-motion: reduce) { .nex3-chat-message, .nex3-chat-cta, .nex3-chat-typing i { animation: none; } .nex3-chat-cta svg { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .nex3-chat-message, .nex3-chat-cta, .nex3-chat-escalate, .nex3-chat-typing i { animation: none; } .nex3-chat-cta svg { transition: none; } }
 
 @layer base {
   :root {

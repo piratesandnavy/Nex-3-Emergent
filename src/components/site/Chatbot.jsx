@@ -16,6 +16,7 @@ import {
   Paperclip,
   Puzzle,
   Send,
+  UserRound,
   X,
 } from "lucide-react";
 import Nex3Logo from "@/components/site/Nex3Logo";
@@ -26,6 +27,11 @@ const POST_STORAGE_KEY = "nex3-post-chat-v2";
 const SUBMISSION_STORAGE_KEY = "nex3-submission-v2";
 const FAQ_GREETING = "Get answers on AI strategy, implementation, and ROI for your organization";
 const MAX_MESSAGE_LENGTH = 1200;
+const CONTACT_EMAIL = "nex3info@gmail.com";
+const BOOKING_URL = "https://cal.com/purmehdi/30min";
+// Replies where the assistant could not answer, or handed the visitor to the team.
+const NEEDS_HUMAN = /nex3info@gmail\.com|proper conversation with the nex3 team|\b(i|we) (do not|don[’']t) (have|know)\b|\bnot sure\b|\b(cannot|can[’']t|unable to) (answer|help|provide|confirm|share)\b|\b(speak|talk) (with|to) (the|a|our) (nex3 )?(team|person|human)\b/i;
+const needsHuman = (text) => NEEDS_HUMAN.test(text);
 const SIDEBAR_ITEMS = [
   {
     label: "Services",
@@ -115,6 +121,19 @@ function confirmationMessage({ name = "", company = "" }) {
   const thanks = person ? `Thanks for reaching out, ${person}! 🎯` : "Thanks for reaching out! 🎯";
   const subject = project ? `your inquiry about ${project}` : "your inquiry";
   return `${thanks}\n\nI’ve received ${subject}. We’ll review what you’re working on and get back to you within 1–2 business days.\n\nIn the meantime, feel free to ask me anything about our services, workshops, or how we typically work with clients.`;
+}
+
+function Escalation({ onNavigate }) {
+  return (
+    <div className="nex3-chat-escalate" role="group" aria-label="Talk to a person at Nex3">
+      <p><UserRound aria-hidden="true" /><span>Want to talk to a person?</span></p>
+      <div className="nex3-chat-escalate-actions">
+        <a href="/#contact" onClick={onNavigate}>Message the team</a>
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Book a call</a>
+        <a href={`mailto:${CONTACT_EMAIL}`}>Email us</a>
+      </div>
+    </div>
+  );
 }
 
 const canAutoFocus = () =>
@@ -251,7 +270,7 @@ export default function Chatbot() {
       });
       const body = await response.json().catch(() => ({}));
       if (!response.ok || typeof body.reply !== "string") throw new Error(body.error || "Assistant unavailable");
-      setMessages((current) => [...current, { role: "assistant", content: body.reply }]);
+      setMessages((current) => [...current, { role: "assistant", content: body.reply, escalate: needsHuman(body.reply) }]);
     } catch (requestError) {
       if (requestError.name !== "AbortError") setError(requestError.message || "The assistant is temporarily unavailable. Please try again.");
     } finally {
@@ -361,7 +380,7 @@ export default function Chatbot() {
                     </div>
                   )
                 ) : (
-                  <div key={`${message.role}-${index}`} className={message.cta ? "nex3-chat-reply" : undefined}>
+                  <div key={`${message.role}-${index}`} className={message.cta || message.escalate ? "nex3-chat-reply" : undefined}>
                     <div className={`nex3-chat-message ${message.role}`}>{message.content}</div>
                     {message.cta && (
                       <a
@@ -376,10 +395,12 @@ export default function Chatbot() {
                         <ArrowRight aria-hidden="true" />
                       </a>
                     )}
+                    {message.escalate && <Escalation onNavigate={() => setOpen(false)} />}
                   </div>
                 ))}
                 {loading && <div className="nex3-chat-message assistant nex3-chat-typing" aria-label="Assistant is typing"><i /><i /><i /></div>}
                 {error && <div className="nex3-chat-error" role="alert">{error}</div>}
+                {error && <Escalation onNavigate={() => setOpen(false)} />}
               </div>
               {showHome && (
                 <section className="nex3-chat-topics" aria-labelledby="nex3-topic-title">

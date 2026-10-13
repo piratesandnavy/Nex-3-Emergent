@@ -343,6 +343,70 @@ export default function Audit() {
     }
   };
 
+  // "What comes next" — shown as a teaser before the audit, then below the cost comparison once the audit runs
+  const outcomesSection = (
+    <section className="audit-outcomes" aria-labelledby="audit-outcomes-title">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, delay: 0.08 }}
+      >
+        <span className="audit-outcomes__eyebrow">
+          <span aria-hidden="true">{audited ? "✓" : "→"}</span>
+          {audited ? "Audit complete" : "Your audit unlocks"}
+        </span>
+        <h2 id="audit-outcomes-title">Here&rsquo;s what comes next.</h2>
+        <p>Three clear steps from insight to impact.</p>
+      </motion.div>
+
+      <div className="audit-outcomes__path">
+        {AUDIT_OUTCOMES.map((outcome, index) => {
+          const isActive = activeOutcome === outcome.id;
+          return (
+            <div className="audit-outcomes__path-item" key={outcome.id}>
+              <motion.button
+                type="button"
+                data-testid={`audit-outcome-${outcome.id}`}
+                data-cal-link={outcome.id === "overlap" ? "purmehdi/30min" : undefined}
+                data-cal-namespace={outcome.id === "overlap" ? "30min" : undefined}
+                data-cal-config={
+                  outcome.id === "overlap"
+                    ? '{"layout":"month_view","useSlotsViewOnSmallScreen":true}'
+                    : undefined
+                }
+                aria-pressed={isActive}
+                onClick={(event) => selectOutcome(outcome, event)}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.18 + index * 0.12 }}
+                whileTap={{ scale: 0.985 }}
+                className={`audit-outcome ${isActive ? "is-active" : ""}`}
+              >
+                <span className="audit-outcome__fill" aria-hidden="true" />
+                <span className="audit-outcome__content">
+                  <span className="audit-outcome__number">{outcome.number}</span>
+                  <strong>{outcome.title}</strong>
+                  <span className="audit-outcome__description">{outcome.description}</span>
+                  <span className="audit-outcome__hint">
+                    {isActive ? "Selected" : "Explore step"}
+                    <ArrowRight aria-hidden="true" />
+                  </span>
+                </span>
+              </motion.button>
+
+              {index < AUDIT_OUTCOMES.length - 1 && (
+                <div className="audit-outcomes__connector" aria-hidden="true">
+                  <span />
+                  <ArrowRight />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+
   return (
     <main data-testid="audit-page" className="relative min-h-screen bg-[var(--ink)] pb-28">
       {/* Top bar */}
@@ -537,66 +601,7 @@ export default function Audit() {
           </p>
         </div>
 
-        <section className="audit-outcomes" aria-labelledby="audit-outcomes-title">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.08 }}
-          >
-            <span className="audit-outcomes__eyebrow">
-              <span aria-hidden="true">{audited ? "✓" : "→"}</span>
-              {audited ? "Audit complete" : "Your audit unlocks"}
-            </span>
-            <h2 id="audit-outcomes-title">Here&rsquo;s what comes next.</h2>
-            <p>Three clear steps from insight to impact.</p>
-          </motion.div>
-
-          <div className="audit-outcomes__path">
-            {AUDIT_OUTCOMES.map((outcome, index) => {
-              const isActive = activeOutcome === outcome.id;
-              return (
-                <div className="audit-outcomes__path-item" key={outcome.id}>
-                  <motion.button
-                    type="button"
-                    data-testid={`audit-outcome-${outcome.id}`}
-                    data-cal-link={outcome.id === "overlap" ? "purmehdi/30min" : undefined}
-                    data-cal-namespace={outcome.id === "overlap" ? "30min" : undefined}
-                    data-cal-config={
-                      outcome.id === "overlap"
-                        ? '{"layout":"month_view","useSlotsViewOnSmallScreen":true}'
-                        : undefined
-                    }
-                    aria-pressed={isActive}
-                    onClick={(event) => selectOutcome(outcome, event)}
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.18 + index * 0.12 }}
-                    whileTap={{ scale: 0.985 }}
-                    className={`audit-outcome ${isActive ? "is-active" : ""}`}
-                  >
-                    <span className="audit-outcome__fill" aria-hidden="true" />
-                    <span className="audit-outcome__content">
-                      <span className="audit-outcome__number">{outcome.number}</span>
-                      <strong>{outcome.title}</strong>
-                      <span className="audit-outcome__description">{outcome.description}</span>
-                      <span className="audit-outcome__hint">
-                        {isActive ? "Selected" : "Explore step"}
-                        <ArrowRight aria-hidden="true" />
-                      </span>
-                    </span>
-                  </motion.button>
-
-                  {index < AUDIT_OUTCOMES.length - 1 && (
-                    <div className="audit-outcomes__connector" aria-hidden="true">
-                      <span />
-                      <ArrowRight />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
+        {!audited && outcomesSection}
       </section>
 
       {/* Results — dark, on-theme */}
@@ -756,6 +761,8 @@ export default function Audit() {
                 </div>
               </div>
             </div>
+
+            {outcomesSection}
 
             {/* Lead capture */}
             <div

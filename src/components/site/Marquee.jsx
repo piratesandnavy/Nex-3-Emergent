@@ -6,7 +6,6 @@ const WORDS = [
   "NO HYPE",
   "NO 6-MONTH DECKS",
   "AI",
-  "WEB3",
 ];
 
 export default function Marquee() {

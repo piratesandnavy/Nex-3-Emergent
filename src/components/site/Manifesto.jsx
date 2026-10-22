@@ -43,7 +43,7 @@ const CHAPTERS = [
         <a
           href={HUMAN_AI_URL}
           data-testid="human-ai-link"
-          className="text-[var(--acid)] no-underline transition-opacity hover:opacity-80"
+          className="text-[var(--acid)] no-underline underline-offset-4 hover:underline"
         >
           combine human talent and AI
         </a>{" "}

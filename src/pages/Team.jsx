@@ -12,7 +12,7 @@ const CONSULTANTS = [
   {
     name: "Mostafa Purmehdi",
     role: "Senior Consultant · PhD, MBA",
-    bio: "Leading expert in AI and Web3 business strategy with 15+ years helping companies navigate digital transformation. Specializes in strategic planning, technology integration, and organizational change.",
+    bio: "Leading expert in AI business strategy with 15+ years helping companies navigate digital transformation. Specializes in strategic planning, technology integration, and organizational change.",
     image: "/images/team/mostafa-purmehdi.jpg",
     linkedin: "https://www.linkedin.com/in/purmehdi/",
   },
@@ -72,7 +72,7 @@ const INTERNS = [
 
 const PROGRAM = [
   { n: "01", t: "Canadian Work Experience", d: "Hands-on experience in the Canadian tech industry." },
-  { n: "02", t: "Skill Development", d: "Learn cutting-edge AI and Web3 through real projects." },
+  { n: "02", t: "Skill Development", d: "Learn cutting-edge AI through real projects." },
   { n: "03", t: "Mentorship", d: "Work closely with industry experts and senior consultants." },
   { n: "04", t: "Career Support", d: "Guidance for applying to your dream jobs." },
 ];
@@ -174,7 +174,7 @@ function CTAButton({ cta }) { return ( <button type="button" onClick={cta.onClic
           transition={{ duration: 0.9, delay: 0.25 }}
           className="mt-8 max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-lg"
         >
-          Meet the team that will guide you through your AI and Web3 journey —
+          Meet the team that will guide you through your AI journey —
           operators, strategists, and builders, not slide factories.
         </motion.p>
       </section>

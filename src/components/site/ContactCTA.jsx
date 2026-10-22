@@ -3,13 +3,16 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import { ArrowRight, CalendarDays, ClipboardList, GraduationCap, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Nex3Logo from "@/components/site/Nex3Logo";
+import AuditButton from "@/components/ui/AuditButton";
 
 const CONTACT_EMAIL = "nex3info@gmail.com";
 const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
 const UPLOAD_ENDPOINT = `https://formsubmit.co/${CONTACT_EMAIL}`;
 
 export default function ContactCTA({ careers = false }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
   const [position, setPosition] = useState("");
   const [resume, setResume] = useState(null);
@@ -281,6 +284,11 @@ export default function ContactCTA({ careers = false }) {
               </>
             )}
           </p>
+          {!careers && (
+            <div className="mt-10">
+              <AuditButton onClick={() => navigate("/audit")} />
+            </div>
+          )}
           <div className="mt-12 w-40 opacity-70">
             <Nex3Logo animate={false} className="h-auto w-full" />
           </div>

@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import AuditButton from "@/components/ui/AuditButton";
 
+// TODO: replace "#" with the live Nex3 Studios URL
+const NEX3_STUDIOS_URL = "#";
+
 const CHAPTERS = [
   {
     n: "01",
@@ -13,13 +16,26 @@ const CHAPTERS = [
     n: "02",
     title: "Build",
     lead: "Ship the right thing.",
-    body: "From architecture to token design to go-to-market, we sit inside the work — helping you build a product and a company that survive contact with reality.",
+    body: (
+      <>
+        From architecture to design to build, we sit inside the work — helping
+        you create your customized product or AI agent in our{" "}
+        <a
+          href={NEX3_STUDIOS_URL}
+          data-testid="nex3-studios-link"
+          className="text-[var(--acid)] underline underline-offset-4 transition-opacity hover:opacity-80"
+        >
+          Nex3 Studios
+        </a>
+        .
+      </>
+    ),
   },
   {
     n: "03",
     title: "Hire",
     lead: "The team that compounds.",
-    body: "We help you find and close the operators, engineers, and leaders who move the needle — and design the org so the next hire is easier than the last.",
+    body: "We help small organizations combine human talent and AI to build smarter, leaner, and more scalable businesses.",
   },
 ];
 

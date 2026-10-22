@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import AuditButton from "@/components/ui/AuditButton";
 
 // TODO: replace "#" with the live Nex3 Studios URL
 const NEX3_STUDIOS_URL = "#";
@@ -54,7 +52,6 @@ const CHAPTERS = [
 ];
 
 export default function Manifesto() {
-  const navigate = useNavigate();
   return (
     <section
       id="approach"
@@ -101,16 +98,6 @@ export default function Manifesto() {
             </p>
           </motion.div>
         ))}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className="flex items-center justify-center py-0 relative z-10 border-t border-[var(--line)]"
-        >
-          <AuditButton onClick={() => navigate("/audit")} />
-        </motion.div>
       </div>
     </section>
   );

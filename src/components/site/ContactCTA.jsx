@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
-import { ArrowRight, CalendarDays, ClipboardList, GraduationCap, X } from "lucide-react";
+import { ArrowRight, CalendarDays, GraduationCap, MessageCircle, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Nex3Logo from "@/components/site/Nex3Logo";
 import AuditButton from "@/components/ui/AuditButton";
@@ -328,20 +328,21 @@ export default function ContactCTA({ careers = false }) {
 
             <motion.button
               type="button"
-              data-testid="proposal-card"
-              onClick={() => setProposalOpen(true)}
+              data-testid="ask-ai-card"
+              onClick={() => window.dispatchEvent(new CustomEvent("nex3:open-chat"))}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.99 }}
               className="group relative min-h-[320px] overflow-hidden rounded-[22px] border hairline bg-[var(--ink-2)] p-8 text-left transition-colors duration-300 hover:border-[var(--acid)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--acid)] sm:p-10"
               aria-haspopup="dialog"
+              aria-label="Ask Nex3 AI — open the chat assistant"
             >
               <span className="absolute inset-0 translate-y-full bg-[var(--acid)] transition-transform duration-300 ease-out group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0" />
               <div className="relative z-10 flex items-start justify-between">
-                <ClipboardList className="h-8 w-8 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.8} />
+                <MessageCircle className="h-8 w-8 text-[var(--acid)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.8} />
                 <ArrowRight className="h-7 w-7 text-[var(--muted)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]" strokeWidth={1.5} />
               </div>
               <div className="relative z-10 mt-9 max-w-xl">
-                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Request a Proposal</h3>
+                <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Ask Nex3 AI</h3>
                 <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Get answers, discover our capabilities, and find what you need.</p>
               </div>
             </motion.button>

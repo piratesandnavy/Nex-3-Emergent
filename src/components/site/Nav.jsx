@@ -33,12 +33,6 @@ export default function Nav() {
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const goRoute = (path) => {
-    if (location.pathname !== path) navigate(path);
-    else if (window.__lenis) window.__lenis.scrollTo(0);
-    else window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const goContact = () => scrollTo("#contact");
 
   const mobileAction = (action) => {
@@ -86,13 +80,12 @@ export default function Nav() {
           >
             Team
           </button>
-          <button
-            data-testid="nav-link-audit"
-            onClick={() => goRoute("/audit")}
-            className="font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--paper)]"
+          <span
+            data-testid="nav-link-studio"
+            className="cursor-default font-mono text-[11px] uppercase tracking-[0.22em] text-[var(--muted)]"
           >
-            Free AI Audit
-          </button>
+            Studio
+          </span>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -145,12 +138,9 @@ export default function Nav() {
               >
                 Team
               </button>
-              <button
-                onClick={() => mobileAction(() => goRoute("/audit"))}
-                className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]"
-              >
-                Free AI Audit
-              </button>
+              <span className="border-b hairline py-4 text-left font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)]">
+                Studio
+              </span>
               <button
                 onClick={() => mobileAction(goContact)}
                 className="mt-5 rounded-full bg-[var(--acid)] px-5 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--ink)]"

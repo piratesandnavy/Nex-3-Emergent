@@ -4,6 +4,8 @@ import AuditButton from "@/components/ui/AuditButton";
 
 // TODO: replace "#" with the live Nex3 Studios URL
 const NEX3_STUDIOS_URL = "#";
+// TODO: replace "#" with the URL for the "human talent and AI" link
+const HUMAN_AI_URL = "#";
 
 const CHAPTERS = [
   {
@@ -35,7 +37,19 @@ const CHAPTERS = [
     n: "03",
     title: "Hire",
     lead: "The team that compounds.",
-    body: "We help small organizations combine human talent and AI to build smarter, leaner, and more scalable businesses.",
+    body: (
+      <>
+        We help small organizations{" "}
+        <a
+          href={HUMAN_AI_URL}
+          data-testid="human-ai-link"
+          className="text-[var(--acid)] no-underline transition-opacity hover:opacity-80"
+        >
+          combine human talent and AI
+        </a>{" "}
+        to build smarter, leaner, and more scalable businesses.
+      </>
+    ),
   },
 ];
 

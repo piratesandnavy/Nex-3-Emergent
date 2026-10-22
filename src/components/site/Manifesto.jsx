@@ -25,7 +25,7 @@ const CHAPTERS = [
         <a
           href={NEX3_STUDIOS_URL}
           data-testid="nex3-studios-link"
-          className="text-[var(--acid)] underline underline-offset-4 transition-opacity hover:opacity-80"
+          className="text-[var(--acid)] no-underline underline-offset-4 hover:underline"
         >
           Nex3 Studios
         </a>

@@ -334,7 +334,7 @@ export default function ContactCTA({ careers = false }) {
               </div>
               <div className="relative z-10 mt-9 max-w-xl">
                 <h3 className="font-display text-3xl font-bold leading-tight tracking-[-0.035em] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Request a Proposal</h3>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Get a scoped plan and pricing tailored to your organization.</p>
+                <p className="mt-5 text-lg leading-relaxed text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--ink)] group-focus-visible:text-[var(--ink)] group-active:text-[var(--ink)]">Get answers, discover our capabilities, and find what you need.</p>
               </div>
             </motion.button>
 

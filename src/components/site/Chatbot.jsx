@@ -428,7 +428,7 @@ export default function Chatbot() {
         )}
       </AnimatePresence>
       {!open && (
-        <button type="button" className="nex3-chat-launcher" onClick={openFaqWindow} aria-label="Chat with AI"><span className="nex3-chat-live" aria-hidden="true" /><span>Ask Nex3</span><MessageCircle /></button>
+        <button type="button" className="nex3-chat-launcher" onClick={openFaqWindow} aria-label="Chat with AI"><span className="nex3-chat-live" aria-hidden="true" /><MessageCircle /></button>
       )}
     </aside>
   );

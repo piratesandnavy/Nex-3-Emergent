@@ -96,7 +96,7 @@ const TOPICS = [
     label: "What services do you offer?",
     Icon: Puzzle,
     answer:
-      "Nex3 helps leaders plan, build, and hire for the AI and Web3 economy. That includes strategy, market and product validation, technical architecture, AI agent design, token and go-to-market work, workshops, and support finding the operators and specialists needed to execute.",
+      "Nex3 helps leaders plan, build, and hire for the AI economy. That includes strategy, market and product validation, technical architecture, AI agent design, token and go-to-market work, workshops, and support finding the operators and specialists needed to execute.",
   },
   {
     label: "Which industries can use Nex3 services?",

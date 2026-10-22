@@ -10,7 +10,7 @@ const scrollTo = (id) => {
   else el.scrollIntoView({ behavior: "smooth" });
 };
 
-const HEADLINE = ["Your Next 3 Decisions", "in the AI &", "Web3 Economy."];
+const HEADLINE = ["Your Next 3 Decisions", "in the AI Economy."];
 
 function Line({ children, delay }) {
   return (
@@ -85,9 +85,9 @@ export default function Hero() {
         >
           {HEADLINE.map((l, i) => (
             <Line key={i} delay={base + i * 0.12}>
-              {i === 2 ? (
+              {i === 1 ? (
                 <span>
-                  Web3 <span className="text-[var(--acid)]">Economy.</span>
+                  in the AI <span className="text-[var(--acid)]">Economy.</span>
                 </span>
               ) : (
                 l

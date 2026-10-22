@@ -187,6 +187,19 @@ export default function Chatbot() {
     return () => window.removeEventListener("nex3:inquiry-submitted", handleSubmission);
   }, []);
 
+  // Lets other components (e.g. the "Ask Nex3 AI" card) open the assistant.
+  useEffect(() => {
+    const handleOpen = () => {
+      setMode("faq");
+      setMessages(loadStored(FAQ_STORAGE_KEY, [{ role: "assistant", content: FAQ_GREETING }]));
+      setError("");
+      setActiveNav("assistant");
+      setOpen(true);
+    };
+    window.addEventListener("nex3:open-chat", handleOpen);
+    return () => window.removeEventListener("nex3:open-chat", handleOpen);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     // Only auto-focus on desktop; on touch devices this would pop up the keyboard.
